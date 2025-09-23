@@ -1,26 +1,109 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+@font-face {
+  font-family: "Block";
+  src: url("/fonts/block.ttf");
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+@font-face {
+  font-family: "Blocks";
+  src: url("/fonts/blocks.ttf");
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+@layer utilities {
+  .font-block {
+    font-family: "Block";
+  }
+
+  .font-blocks {
+    font-family: "Blocks";
+  }
+
+  .text-xxs {
+    font-size: 0.6rem;
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+html {
+  overflow-x: hidden;
+  font-family: "Block";
+}
+
+html::selection {
+  background-color: black;
+}
+
+/* Hide default scrollbars completely */
+* {
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE and Edge */
+}
+
+::-webkit-scrollbar {
+  display: none; /* Chrome, Safari, Opera */
+}
+
+@keyframes float {
+  0% {
+    transform: translateY(0px);
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(-80px);
+    opacity: 0;
+  }
+}
+
+.float-animation {
+  animation: float 1s ease-out forwards;
+}
+
+/* Custom slider styles */
+.slider::-webkit-slider-thumb {
+  appearance: none;
+  width: 20px;
+  height: 20px;
+  background: white;
+  border: 2px solid black;
+  cursor: pointer;
+  border-radius: 0;
+}
+
+.slider::-webkit-slider-thumb:hover {
+  background: black;
+}
+
+.slider::-moz-range-thumb {
+  width: 20px;
+  height: 20px;
+  background: white;
+  border: 2px solid black;
+  cursor: pointer;
+  border-radius: 0;
+  box-shadow: none;
+}
+
+.slider::-moz-range-thumb:hover {
+  background: black;
+}
+
+.slider::-ms-thumb {
+  width: 20px;
+  height: 20px;
+  background: white;
+  border: 2px solid black;
+  cursor: pointer;
+  border-radius: 0;
+}
+
+.slider::-ms-thumb:hover {
+  background: black;
+}
+
+button {
+  cursor: pointer;
+}
+
+button:disabled {
+  cursor: default;
 }
