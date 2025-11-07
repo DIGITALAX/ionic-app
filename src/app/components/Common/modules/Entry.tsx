@@ -45,7 +45,7 @@ const Entry: FunctionComponent<{ dict: any }> = ({ dict }): JSX.Element => {
   }
 
   return (
-    <div className="w-full max-w-4xl mx-auto relative font-blocks">
+    <div className="w-full max-w-4xl mx-auto relative">
       {appraisalData.length > 0 && (
         <div className="fixed bottom-4 right-4 bg-black text-white px-3 py-2 z-50">
           <div className="text-sm">{dict?.entry?.pending}: {appraisalData.length}/10</div>
@@ -105,7 +105,7 @@ const Entry: FunctionComponent<{ dict: any }> = ({ dict }): JSX.Element => {
           <div className="bg-white">
             <div className="text-center space-y-4">
               {currentNFT.metadata?.title && (
-                <h2 className="text-xl font-medium">
+                <h2 className="text-xl">
                   {currentNFT.metadata.title}
                 </h2>
               )}
@@ -150,7 +150,7 @@ const Entry: FunctionComponent<{ dict: any }> = ({ dict }): JSX.Element => {
                     {context?.userReactions &&
                       context.userReactions.length > 0 && (
                         <div className="border-t border-gray-300 pt-2">
-                          <div className="text-xs mb-2 font-medium">
+                          <div className="text-xs mb-2">
                             {dict?.entry?.customReactions}
                           </div>
                           <div className="grid grid-cols-8 gap-1">
@@ -298,7 +298,7 @@ const Entry: FunctionComponent<{ dict: any }> = ({ dict }): JSX.Element => {
       <div className="border border-black p-4 bg-white mt-6">
         <div className="space-y-4">
           <div>
-            <label className="block text-xs mb-1 font-medium">{dict?.entry?.comment}</label>
+            <label className="block text-xs mb-1">{dict?.entry?.comment}</label>
             <textarea
               value={currentAppraisal?.comment || ""}
               onChange={(e) => updateComment(e.target.value)}
@@ -312,7 +312,7 @@ const Entry: FunctionComponent<{ dict: any }> = ({ dict }): JSX.Element => {
           </div>
 
           <div>
-            <label className="block text-xs mb-1 font-medium">{dict?.entry?.overallScore}</label>
+            <label className="block text-xs mb-1">{dict?.entry?.overallScore}</label>
             <div className="flex items-center gap-2">
               <input
                 type="range"
@@ -322,7 +322,7 @@ const Entry: FunctionComponent<{ dict: any }> = ({ dict }): JSX.Element => {
                 onChange={(e) => updateScore(Number(e.target.value))}
                 className="flex-1 h-1 bg-gray-200 border border-black appearance-none cursor-pointer"
               />
-              <span className="text-xs font-medium w-10 text-center">
+              <span className="text-xs w-10 text-center">
                 {currentAppraisal?.overallScore || 50}
               </span>
             </div>

@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 import Providers from "./providers";
 import { LOCALES } from "./lib/constants";
+import { AllEffectsContainer } from "./components/Common/modules/AllEffectsContainer";
 
 export type tParams = Promise<{ lang: string }>;
 
@@ -10,7 +11,7 @@ export const metadata: Metadata = {
   metadataBase: new URL("https://ionic.digitalax.xyz/"),
   description: "Peer appraisals and reaction packs.",
   twitter: {
-  description: "",
+    description: "Peer appraisals and reaction packs.",
     creator: "@digitalax_",
     site: "@digitalax_",
     card: "summary_large_image",
@@ -109,7 +110,14 @@ export default function RootLayout({
         />
       </head>
       <body>
-        <Providers>{children}</Providers>
+        <Providers>
+          <AllEffectsContainer />
+          <div className="bg-cat-hero relative w-full flex">
+            <div className="relative w-full h-fit overflow-x-hidden bg-black/70 flex">
+              {children}
+            </div>
+          </div>
+        </Providers>
       </body>
     </html>
   );

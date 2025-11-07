@@ -88,7 +88,7 @@ const useReviewer = (dict?: any) => {
 
     try {
       let image = form.image;
-      if (image !== "") {
+      if (typeof image !== "string") {
         const formData = new FormData();
         formData.append("file", image as File);
 

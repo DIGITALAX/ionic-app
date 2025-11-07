@@ -26,7 +26,7 @@ const ReviewerEntry: FunctionComponent<{ dict: any }> = ({
 
   if (reviewerLoading) {
     return (
-      <div className="w-full max-w-6xl mx-auto font-blocks p-8">
+      <div className="w-full max-w-6xl mx-auto p-8">
         <div className="text-center">{dict?.reviewer?.loading}</div>
       </div>
     );
@@ -34,14 +34,14 @@ const ReviewerEntry: FunctionComponent<{ dict: any }> = ({
 
   if (!reviewer) {
     return (
-      <div className="w-full max-w-6xl mx-auto font-blocks p-8">
+      <div className="w-full max-w-6xl mx-auto p-8">
         <div className="text-center">{dict?.reviewer?.notFound}</div>
       </div>
     );
   }
 
   return (
-    <div className="w-full max-w-5xl mx-auto font-blocks p-3">
+    <div className="w-full max-w-5xl mx-auto p-3">
       <div className="border border-black p-3 mb-3">
         <div className="flex flex-col lg:flex-row gap-3">
           {reviewer.metadata?.image && (
@@ -58,10 +58,10 @@ const ReviewerEntry: FunctionComponent<{ dict: any }> = ({
 
           <div className="flex-1 space-y-3">
             <div>
-              <h1 className="text-lg font-medium mb-1">
+              <h1 className="text-lg mb-1">
                 {reviewer.metadata?.title || dict?.reviewer?.defaultTitle}
               </h1>
-              <div className="text-sm text-gray-600 font-mono">{formatAddress(reviewer.wallet)}</div>
+              <div className="text-sm text-gray-600">{formatAddress(reviewer.wallet)}</div>
             </div>
 
             {reviewer.metadata?.description && (
@@ -70,15 +70,15 @@ const ReviewerEntry: FunctionComponent<{ dict: any }> = ({
 
             <div className="grid grid-cols-2 lg:grid-cols-3 gap-2 text-xs">
               <div className="border border-gray-300 p-2">
-                <div className="font-medium text-sm">{reviewer.reviewCount}</div>
+                <div className="text-sm">{reviewer.reviewCount}</div>
                 <div className="text-gray-600">Reviews</div>
               </div>
               <div className="border border-gray-300 p-2">
-                <div className="font-medium text-sm">{reviewer.averageScore}</div>
+                <div className="text-sm">{reviewer.averageScore}</div>
                 <div className="text-gray-600">Avg Score</div>
               </div>
               <div className="border border-gray-300 p-2 col-span-2 lg:col-span-1">
-                <div className="font-medium text-sm">{reviewer.totalScore}</div>
+                <div className="text-sm">{reviewer.totalScore}</div>
                 <div className="text-gray-600">Total Given</div>
               </div>
             </div>
@@ -92,7 +92,7 @@ const ReviewerEntry: FunctionComponent<{ dict: any }> = ({
 
       <div className="border border-black border-t-0">
         <div className="p-3 border-b border-black bg-gray-50">
-          <div className="text-base font-medium">{dict?.reviewer?.reviewsGiven} ({reviewer.reviewCount})</div>
+          <div className="text-base">{dict?.reviewer?.reviewsGiven} ({reviewer.reviewCount})</div>
         </div>
 
         <div className="max-h-96 overflow-y-auto">
@@ -102,7 +102,7 @@ const ReviewerEntry: FunctionComponent<{ dict: any }> = ({
                 <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-2 mb-2">
                   <div className="flex items-center gap-2">
                     <span className="bg-black text-white px-2 py-1 text-xs">#{review.reviewId}</span>
-                    <span className="font-bold text-sm">{review.reviewScore}/100</span>
+                    <span className="text-sm">{review.reviewScore}/100</span>
                   </div>
                   <div className="text-xs text-gray-500">{formatDate(review.timestamp)}</div>
                 </div>

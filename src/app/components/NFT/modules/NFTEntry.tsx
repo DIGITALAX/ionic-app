@@ -50,7 +50,7 @@ const NFTEntry: FunctionComponent<{ dict: any }> = ({ dict }): JSX.Element => {
 
   if (nftLoading) {
     return (
-      <div className="w-full max-w-5xl mx-auto font-blocks p-4">
+      <div className="w-full max-w-5xl mx-auto p-4">
         <div className="text-center text-sm">{dict?.nft?.loading}</div>
       </div>
     );
@@ -58,14 +58,14 @@ const NFTEntry: FunctionComponent<{ dict: any }> = ({ dict }): JSX.Element => {
 
   if (!nft) {
     return (
-      <div className="w-full max-w-5xl mx-auto font-blocks p-4">
+      <div className="w-full max-w-5xl mx-auto p-4">
         <div className="text-center text-sm">{dict?.nft?.notFound}</div>
       </div>
     );
   }
 
   return (
-    <div className="w-full max-w-4xl mx-auto font-blocks p-3 relative">
+    <div className="w-full max-w-4xl mx-auto p-3 relative">
       {floatingEmojis.map((floatingEmoji) => (
         <div
           key={floatingEmoji.id}
@@ -107,16 +107,16 @@ const NFTEntry: FunctionComponent<{ dict: any }> = ({ dict }): JSX.Element => {
           <div className="flex-1 space-y-3">
             <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-2">
               <div>
-                <h1 className="text-base font-medium">
+                <h1 className="text-base">
                   {nft.metadata?.title}
                 </h1>
                 <div className="text-sm text-gray-600">#{nft.nftId}</div>
               </div>
               <div className="text-left sm:text-right text-sm">
                 <div className="flex flex-wrap gap-2 sm:gap-4">
-                  <div><span className="font-medium">{nft.appraisalCount}</span> appraisals</div>
-                  <div><span className="font-medium">{nft.averageScore}</span> avg</div>
-                  <div><span className="font-medium">{nft.totalScore}</span> total</div>
+                  <div><span >{nft.appraisalCount}</span> appraisals</div>
+                  <div><span >{nft.averageScore}</span> avg</div>
+                  <div><span >{nft.totalScore}</span> total</div>
                 </div>
               </div>
             </div>
@@ -126,18 +126,18 @@ const NFTEntry: FunctionComponent<{ dict: any }> = ({ dict }): JSX.Element => {
             )}
             
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 sm:gap-3 text-sm">
-              <div>Token: <span className="font-mono">{nft.tokenId}</span></div>
+              <div>Token: <span >{nft.tokenId}</span></div>
               <div>Type: <span>{nft.tokenType}</span></div>
               <div>Status: <span className={nft.active === "true" ? "text-green-600" : "text-red-600"}>{nft.active === "true" ? "✓" : "✗"}</span></div>
             </div>
-            <div className="text-sm">Contract: <span className="font-mono">{formatAddress(nft.nftContract)}</span></div>
+            <div className="text-sm">Contract: <span >{formatAddress(nft.nftContract)}</span></div>
           </div>
         </div>
       </div>
 
       <div className="border border-black border-t-0">
         <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-2 p-3 border-b border-black bg-gray-50">
-          <div className="text-base font-medium">{dict?.nft?.appraisals} ({nft.appraisalCount})</div>
+          <div className="text-base">{dict?.nft?.appraisals} ({nft.appraisalCount})</div>
           {context?.conductor && (
             <button
               onClick={() => setShowEmojiPanel(true)}
@@ -155,7 +155,7 @@ const NFTEntry: FunctionComponent<{ dict: any }> = ({ dict }): JSX.Element => {
                 <div className="flex justify-between items-center mb-2">
                   <div className="flex items-center gap-2">
                     <span className="bg-black text-white px-2 py-1 text-sm">#{appraisal.appraisalId}</span>
-                    <span className="font-bold text-base">{appraisal.overallScore}</span>
+                    <span className="text-base">{appraisal.overallScore}</span>
                     <span className="text-sm text-gray-500">/ 100</span>
                   </div>
                   <div className="text-sm text-gray-500">{formatDate(appraisal.blockTimestamp)}</div>
@@ -195,13 +195,13 @@ const NFTEntry: FunctionComponent<{ dict: any }> = ({ dict }): JSX.Element => {
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-2">
           <div className="bg-white border border-black p-4 max-w-lg w-full max-h-[90vh] overflow-y-auto">
             <div className="flex justify-between items-center mb-4">
-              <h3 className="text-base font-medium">{dict?.nft?.appraiseNft}</h3>
+              <h3 className="text-base">{dict?.nft?.appraiseNft}</h3>
               <button onClick={() => setShowEmojiPanel(false)} className="text-xl hover:bg-gray-100 w-7 h-7 flex items-center justify-center">×</button>
             </div>
 
             <div className="space-y-4">
               <div>
-                <label className="block text-sm mb-2 font-medium">{dict?.nft?.comment}</label>
+                <label className="block text-sm mb-2">{dict?.nft?.comment}</label>
                 <textarea
                   value={appraisalData?.comment}
                   onChange={(e) => updateComment(e.target.value)}
@@ -213,7 +213,7 @@ const NFTEntry: FunctionComponent<{ dict: any }> = ({ dict }): JSX.Element => {
               </div>
 
               <div>
-                <label className="block text-sm mb-2 font-medium">{dict?.nft?.overallScore}</label>
+                <label className="block text-sm mb-2">{dict?.nft?.overallScore}</label>
                 <div className="flex items-center gap-3">
                   <input
                     type="range"
@@ -223,12 +223,12 @@ const NFTEntry: FunctionComponent<{ dict: any }> = ({ dict }): JSX.Element => {
                     onChange={(e) => updateScore(Number(e.target.value))}
                     className="flex-1 h-2 bg-gray-200 border border-black appearance-none cursor-pointer"
                   />
-                  <span className="text-sm font-medium w-10 text-center">{appraisalData?.overallScore}</span>
+                  <span className="text-sm w-10 text-center">{appraisalData?.overallScore}</span>
                 </div>
               </div>
 
               <div>
-                <label className="block text-sm mb-2 font-medium">REACTIONS</label>
+                <label className="block text-sm mb-2">REACTIONS</label>
                 <div className="grid grid-cols-4 sm:grid-cols-6 gap-2 mb-3">
                   {EMOJIS.map((emoji) => (
                     <button
@@ -243,7 +243,7 @@ const NFTEntry: FunctionComponent<{ dict: any }> = ({ dict }): JSX.Element => {
 
                 {context?.userReactions && context.userReactions.length > 0 && (
                   <div className="border-t border-gray-300 pt-3">
-                    <div className="text-sm mb-2 font-medium">{dict?.nft?.customReactions}</div>
+                    <div className="text-sm mb-2">{dict?.nft?.customReactions}</div>
                     <div className="grid grid-cols-6 sm:grid-cols-8 gap-2">
                       {context.userReactions.map((item: { reaction: any; count: number }) => {
                         const currentUsage = appraisalData?.reactionUsage?.find((r) => r.reactionId === Number(item.reaction.reactionId));

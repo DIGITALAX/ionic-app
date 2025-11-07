@@ -45,8 +45,8 @@ export const CORE_CONTRACT_ADDRESSES: Record<number, CoreContractAddresses> = {
     designers: "0x",
     conductors: "0x",
     reactionPacks: "0x",
-    ionic: "0x",
-    mona: "0x",
+    ionic: "0x8E2318511fFCc846EA646902a8cb8326F4d07E56",
+    mona: "0x28547B5b6B405A1444A17694AC84aa2d6A03b3Bd",
   },
 };
 
@@ -63,3 +63,27 @@ export const getCoreContractAddresses = (
 };
 
 export const EMOJIS: string[] = ["😍", "👍", "👎", "🔥", "💎", "🤔"];
+
+export const STICKERS: string[] = [
+  "agent.png",
+  "agent1.png",
+  "chat.png",
+  "chicita.png",
+  "deeb3.png",
+  "deepseek.png",
+  "digi1.png",
+  "digitalax.png",
+  "dog.png",
+  "fire.png",
+  "flower.png",
+  "fresa.png",
+  "livenerd.png",
+  "man.png",
+  "smile.png",
+  "smile2.png",
+  "smile3.png",
+  "space.png",
+  "vitalik1.png",
+  "vitalik2.png",
+  "web3fashion.png",
+];

@@ -51,7 +51,7 @@ const ConductorEntry: FunctionComponent<{ dict: any }> = ({
 
   if (conductorLoading) {
     return (
-      <div className="w-full max-w-6xl mx-auto font-blocks p-8">
+      <div className="w-full max-w-6xl mx-auto p-8">
         <div className="text-center">{dict?.conductor?.loading}</div>
       </div>
     );
@@ -59,14 +59,14 @@ const ConductorEntry: FunctionComponent<{ dict: any }> = ({
 
   if (!conductor) {
     return (
-      <div className="w-full max-w-6xl mx-auto font-blocks p-8">
+      <div className="w-full max-w-6xl mx-auto p-8">
         <div className="text-center">{dict?.conductor?.notFound}</div>
       </div>
     );
   }
 
   return (
-    <div className="w-full max-w-5xl mx-auto font-blocks p-3 relative">
+    <div className="w-full max-w-5xl mx-auto p-3 relative">
       {floatingEmojis.map((floatingEmoji) => (
         <div
           key={floatingEmoji.id}
@@ -103,7 +103,7 @@ const ConductorEntry: FunctionComponent<{ dict: any }> = ({
           
           <div className="flex-1 space-y-3">
             <div>
-              <h1 className="text-lg font-medium mb-1">
+              <h1 className="text-lg mb-1">
                 {conductor.metadata?.title}
               </h1>
               <div className="text-sm text-gray-600">#{conductor.conductorId}</div>
@@ -115,25 +115,25 @@ const ConductorEntry: FunctionComponent<{ dict: any }> = ({
 
             <div className="grid grid-cols-2 lg:grid-cols-4 gap-2 text-xs">
               <div className="border border-gray-300 p-2">
-                <div className="font-medium text-sm">{conductor.appraisalCount}</div>
+                <div className="text-sm">{conductor.appraisalCount}</div>
                 <div className="text-gray-600">Appraisals</div>
               </div>
               <div className="border border-gray-300 p-2">
-                <div className="font-medium text-sm">{conductor.averageScore}</div>
+                <div className="text-sm">{conductor.averageScore}</div>
                 <div className="text-gray-600">Avg Score</div>
               </div>
               <div className="border border-gray-300 p-2">
-                <div className="font-medium text-sm">{conductor.reviewCount}</div>
+                <div className="text-sm">{conductor.reviewCount}</div>
                 <div className="text-gray-600">Reviews</div>
               </div>
               <div className="border border-gray-300 p-2">
-                <div className="font-medium text-sm">{conductor.inviteCount}</div>
+                <div className="text-sm">{conductor.inviteCount}</div>
                 <div className="text-gray-600">Invites</div>
               </div>
             </div>
             
             <div className="text-xs">
-              <div>Wallet: <span className="font-mono">{formatAddress(conductor.wallet)}</span></div>
+              <div>Wallet: <span >{formatAddress(conductor.wallet)}</span></div>
               <div>Created: {formatDate(conductor.blockTimestamp)} | <a href={getExplorerUrl(conductor.transactionHash)} target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">TX</a></div>
             </div>
           </div>
@@ -142,7 +142,7 @@ const ConductorEntry: FunctionComponent<{ dict: any }> = ({
 
       <div className="border border-black border-t-0">
         <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-2 p-3 border-b border-black bg-gray-50">
-          <div className="text-base font-medium">{dict?.conductor?.appraisals} ({conductor.appraisalCount})</div>
+          <div className="text-base">{dict?.conductor?.appraisals} ({conductor.appraisalCount})</div>
           <button
             onClick={() => setShowEmojiPanel(true)}
             className="px-3 py-1 text-sm bg-black text-white hover:bg-gray-800 w-fit"
@@ -158,7 +158,7 @@ const ConductorEntry: FunctionComponent<{ dict: any }> = ({
                 <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-2 mb-2">
                   <div className="flex items-center gap-2">
                     <span className="bg-black text-white px-2 py-1 text-xs">#{appraisal.appraisalId}</span>
-                    <span className="font-bold text-sm">{appraisal.overallScore}/100</span>
+                    <span className="text-sm">{appraisal.overallScore}/100</span>
                   </div>
                   <div className="text-xs text-gray-500">{formatDate(appraisal.blockTimestamp)}</div>
                 </div>
@@ -195,7 +195,7 @@ const ConductorEntry: FunctionComponent<{ dict: any }> = ({
 
       <div className="border border-black border-t-0">
         <div className="p-3 border-b border-black bg-gray-50">
-          <div className="text-base font-medium">{dict?.conductor?.reviewsReceived} ({conductor.reviewCount})</div>
+          <div className="text-base">{dict?.conductor?.reviewsReceived} ({conductor.reviewCount})</div>
         </div>
         
         <div className="max-h-80 overflow-y-auto">
@@ -205,7 +205,7 @@ const ConductorEntry: FunctionComponent<{ dict: any }> = ({
                 <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-2 mb-2">
                   <div className="flex items-center gap-2">
                     <span className="bg-black text-white px-2 py-1 text-xs">#{review.reviewId}</span>
-                    <span className="font-bold text-sm">{review.reviewScore}/100</span>
+                    <span className="text-sm">{review.reviewScore}/100</span>
                   </div>
                   <div className="text-xs text-gray-500">{formatDate(review.timestamp)}</div>
                 </div>
@@ -239,7 +239,7 @@ const ConductorEntry: FunctionComponent<{ dict: any }> = ({
 
       <div className="border border-black border-t-0">
         <div className="p-3 border-b border-black bg-gray-50">
-          <div className="text-base font-medium">{dict?.conductor?.invitedDesigners} ({conductor.invitedDesigners?.length || 0})</div>
+          <div className="text-base">{dict?.conductor?.invitedDesigners} ({conductor.invitedDesigners?.length || 0})</div>
         </div>
         
         <div className="max-h-80 overflow-y-auto">
@@ -260,10 +260,10 @@ const ConductorEntry: FunctionComponent<{ dict: any }> = ({
                   )}
                   
                   <div className="space-y-1">
-                    <div className="text-sm font-medium line-clamp-1">
+                    <div className="text-sm line-clamp-1">
                       {designer.metadata?.title || dict?.conductor?.unnamedDesigner}
                     </div>
-                    <div className="text-xs text-gray-600 font-mono">
+                    <div className="text-xs text-gray-600 ">
                       {formatAddress(designer.wallet)}
                     </div>
                     <button
@@ -286,13 +286,13 @@ const ConductorEntry: FunctionComponent<{ dict: any }> = ({
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-2">
           <div className="bg-white border border-black p-4 max-w-lg w-full max-h-[90vh] overflow-y-auto">
             <div className="flex justify-between items-center mb-4">
-              <h3 className="text-base font-medium">{dict?.conductor?.reviewConductor}</h3>
+              <h3 className="text-base">{dict?.conductor?.reviewConductor}</h3>
               <button onClick={() => setShowEmojiPanel(false)} className="text-xl hover:bg-gray-100 w-7 h-7 flex items-center justify-center">×</button>
             </div>
 
             <div className="space-y-4">
               <div>
-                <label className="block text-sm mb-2 font-medium">{dict?.conductor?.comment}</label>
+                <label className="block text-sm mb-2">{dict?.conductor?.comment}</label>
                 <textarea
                   value={reviewData?.comment}
                   onChange={(e) => updateComment(e.target.value)}
@@ -304,7 +304,7 @@ const ConductorEntry: FunctionComponent<{ dict: any }> = ({
               </div>
 
               <div>
-                <label className="block text-sm mb-2 font-medium">{dict?.conductor?.reviewScore}</label>
+                <label className="block text-sm mb-2">{dict?.conductor?.reviewScore}</label>
                 <div className="flex items-center gap-3">
                   <input
                     type="range"
@@ -314,12 +314,12 @@ const ConductorEntry: FunctionComponent<{ dict: any }> = ({
                     onChange={(e) => updateScore(Number(e.target.value))}
                     className="flex-1 h-2 bg-gray-200 border border-black appearance-none cursor-pointer"
                   />
-                  <span className="text-sm font-medium w-10 text-center">{reviewData?.reviewScore}</span>
+                  <span className="text-sm w-10 text-center">{reviewData?.reviewScore}</span>
                 </div>
               </div>
 
               <div>
-                <label className="block text-sm mb-2 font-medium">REACTIONS</label>
+                <label className="block text-sm mb-2">REACTIONS</label>
                 <div className="grid grid-cols-4 sm:grid-cols-6 gap-2 mb-3">
                   {EMOJIS.map((emoji) => (
                     <button
@@ -334,7 +334,7 @@ const ConductorEntry: FunctionComponent<{ dict: any }> = ({
 
                 {context?.userReactions && context.userReactions.length > 0 && (
                   <div className="border-t border-gray-300 pt-3">
-                    <div className="text-sm mb-2 font-medium">{dict?.conductor?.customReactions}</div>
+                    <div className="text-sm mb-2">{dict?.conductor?.customReactions}</div>
                     <div className="grid grid-cols-6 sm:grid-cols-8 gap-2">
                       {context.userReactions.map((item: { reaction: any; count: number }) => {
                         const currentUsage = reviewData?.reactionUsage?.find((r) => r.reactionId === Number(item.reaction.reactionId));

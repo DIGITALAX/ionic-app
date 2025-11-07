@@ -17,7 +17,7 @@ export default function RootLayout({
   return (
     <>
       <Header params={params} />
-      <div className="relative w-full h-fit min-h-screen flex flex-col gap-3 px-2 py-2 pb-6 pt-28">
+      <div className="relative w-full min-h-screen flex flex-col gap-3 px-2 py-2 pb-6 pt-28">
         {children}
       </div>
       <Modals params={params} />

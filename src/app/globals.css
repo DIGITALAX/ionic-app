@@ -10,23 +10,119 @@
   src: url("/fonts/blocks.ttf");
 }
 
+@font-face {
+  font-family: "Girl";
+  src: url("/fonts/thegirlnextdoor.ttf");
+}
+
+@font-face {
+  font-family: "Mid";
+  src: url("/fonts/Midnight.ttf");
+}
+
 @layer utilities {
   .font-block {
     font-family: "Block";
+  }
+
+  .font-mid {
+    font-family: "Mid";
   }
 
   .font-blocks {
     font-family: "Blocks";
   }
 
+  .font-girl {
+    font-family: "Girl";
+  }
+
   .text-xxs {
     font-size: 0.6rem;
+  }
+
+    .fancy-border-white::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    mask: radial-gradient(
+          12px at 12px 12px,
+          transparent calc(100% - 2px),
+          black calc(100% - 2px) 100%,
+          transparent
+        ) -12px -12px,
+      radial-gradient(
+          12px at calc(100% - 12px) 12px,
+          transparent calc(100% - 2px),
+          black calc(100% - 2px) 100%,
+          transparent
+        )
+        12px -12px,
+      radial-gradient(
+          12px at calc(100% - 12px) calc(100% - 12px),
+          transparent calc(100% - 2px),
+          black calc(100% - 2px) 100%,
+          transparent
+        )
+        12px 12px,
+      radial-gradient(
+          12px at 12px calc(100% - 12px),
+          transparent calc(100% - 2px),
+          black calc(100% - 2px) 100%,
+          transparent
+        ) -12px 12px,
+      linear-gradient(90deg, black 2px, transparent 0) -1px 50% / 100% calc(
+          100% - 24px + 2px
+        ) repeat-x,
+      linear-gradient(black 2px, transparent 0) 50% -1px / calc(
+          100% - 24px + 2px
+        ) 100% repeat-y;
+    -webkit-mask: radial-gradient(
+          12px at 12px 12px,
+          transparent calc(100% - 2px),
+          black calc(100% - 2px) 100%,
+          transparent
+        ) -12px -12px,
+      radial-gradient(
+          12px at calc(100% - 12px) 12px,
+          transparent calc(100% - 2px),
+          black calc(100% - 2px) 100%,
+          transparent
+        )
+        12px -12px,
+      radial-gradient(
+          12px at calc(100% - 12px) calc(100% - 12px),
+          transparent calc(100% - 2px),
+          black calc(100% - 2px) 100%,
+          transparent
+        )
+        12px 12px,
+      radial-gradient(
+          12px at 12px calc(100% - 12px),
+          transparent calc(100% - 2px),
+          black calc(100% - 2px) 100%,
+          transparent
+        ) -12px 12px,
+      linear-gradient(90deg, black 2px, transparent 0) -1px 50% / 100% calc(
+          100% - 24px + 2px
+        ) repeat-x,
+      linear-gradient(black 2px, transparent 0) 50% -1px / calc(
+          100% - 24px + 2px
+        ) 100% repeat-y;
+  }
+
+  .fancy-border-white {
+    position: relative;
+  }
+  .fancy-border-white::before {
+    background: #ffffff;
   }
 }
 
 html {
   overflow-x: hidden;
-  font-family: "Block";
+  font-family: "Girl";
 }
 
 html::selection {
@@ -106,4 +202,23 @@ button {
 
 button:disabled {
   cursor: default;
+}
+
+.bg-cat-hero {
+  @apply relative h-screen w-full;
+}
+
+.bg-cat-hero::before {
+  content: "";
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  background-image: url("/images/background-cat.png");
+  background-size: cover;
+  background-position: center;
+  z-index: -1;
+  opacity: 1;
+  pointer-events: none;
 }

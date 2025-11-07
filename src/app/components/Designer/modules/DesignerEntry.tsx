@@ -27,7 +27,7 @@ const DesignerEntry: FunctionComponent<{ dict: any }> = ({
 
   if (designerLoading) {
     return (
-      <div className="w-full max-w-6xl mx-auto font-blocks p-8">
+      <div className="w-full max-w-6xl mx-auto p-8">
         <div className="text-center">{dict?.designer?.loading}</div>
       </div>
     );
@@ -35,14 +35,14 @@ const DesignerEntry: FunctionComponent<{ dict: any }> = ({
 
   if (!designer) {
     return (
-      <div className="w-full max-w-6xl mx-auto font-blocks p-8">
+      <div className="w-full max-w-6xl mx-auto p-8">
         <div className="text-center">{dict?.designer?.notFound}</div>
       </div>
     );
   }
 
   return (
-    <div className="w-full max-w-5xl mx-auto font-blocks p-3">
+    <div className="w-full max-w-5xl mx-auto p-3">
       <div className="border border-black p-3 mb-3">
         <div className="flex flex-col lg:flex-row gap-3">
           {designer.metadata?.image && (
@@ -59,7 +59,7 @@ const DesignerEntry: FunctionComponent<{ dict: any }> = ({
 
           <div className="flex-1 space-y-3">
             <div>
-              <h1 className="text-lg font-medium mb-1">{designer.metadata?.title}</h1>
+              <h1 className="text-lg mb-1">{designer.metadata?.title}</h1>
               <div className="text-sm text-gray-600">#{designer.designerId}</div>
             </div>
 
@@ -69,24 +69,24 @@ const DesignerEntry: FunctionComponent<{ dict: any }> = ({
 
             <div className="grid grid-cols-2 lg:grid-cols-3 gap-2 text-xs">
               <div className="border border-gray-300 p-2">
-                <div className="font-medium text-sm">{designer.packCount}</div>
+                <div className="text-sm">{designer.packCount}</div>
                 <div className="text-gray-600">Packs</div>
               </div>
               <div className="border border-gray-300 p-2">
-                <div className={`font-medium text-sm ${designer.active === "true" ? "text-green-600" : "text-red-600"}`}>
+                <div className={`text-sm ${designer.active === "true" ? "text-green-600" : "text-red-600"}`}>
                   {designer.active === "true" ? "✓" : "✗"}
                 </div>
                 <div className="text-gray-600">Status</div>
               </div>
               <div className="border border-gray-300 p-2 col-span-2 lg:col-span-1">
-                <div className="font-medium text-sm">{formatDate(designer.inviteTimestamp)}</div>
+                <div className="text-sm">{formatDate(designer.inviteTimestamp)}</div>
                 <div className="text-gray-600">Invited</div>
               </div>
             </div>
 
             <div className="text-xs">
-              <div>Wallet: <span className="font-mono">{formatAddress(designer.wallet)}</span></div>
-              <div>Invited by: <span className="font-mono">{formatAddress(designer.invitedBy)}</span></div>
+              <div>Wallet: <span >{formatAddress(designer.wallet)}</span></div>
+              <div>Invited by: <span >{formatAddress(designer.invitedBy)}</span></div>
             </div>
           </div>
         </div>
@@ -94,7 +94,7 @@ const DesignerEntry: FunctionComponent<{ dict: any }> = ({
 
       <div className="border border-black border-t-0">
         <div className="p-3 border-b border-black bg-gray-50">
-          <div className="text-base font-medium">{dict?.designer?.reactionPacksCreated} ({designer.reactionPacks?.length || 0})</div>
+          <div className="text-base">{dict?.designer?.reactionPacksCreated} ({designer.reactionPacks?.length || 0})</div>
         </div>
 
         <div className="max-h-96 overflow-y-auto">
@@ -117,17 +117,17 @@ const DesignerEntry: FunctionComponent<{ dict: any }> = ({
                   </div>
 
                   <div className="space-y-2">
-                    <h3 className="text-sm font-medium line-clamp-1">{pack.packMetadata?.title}</h3>
+                    <h3 className="text-sm line-clamp-1">{pack.packMetadata?.title}</h3>
                     
                     <p className="text-xs text-gray-600 line-clamp-2">{pack.packMetadata?.description}</p>
 
                     <div className="grid grid-cols-2 gap-2 text-xs">
                       <div>
-                        <div className="font-medium">{formatUnits(BigInt(pack.currentPrice), 18)} MONA</div>
+                        <div >{formatUnits(BigInt(pack.currentPrice), 18)} MONA</div>
                         <div className="text-gray-600">Price</div>
                       </div>
                       <div>
-                        <div className="font-medium">{pack.soldCount}/{pack.maxEditions}</div>
+                        <div >{pack.soldCount}/{pack.maxEditions}</div>
                         <div className="text-gray-600">Sold</div>
                       </div>
                     </div>

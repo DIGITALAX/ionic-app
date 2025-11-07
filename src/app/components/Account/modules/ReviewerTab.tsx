@@ -26,7 +26,7 @@ const ReviewerTab: FunctionComponent<{dict: any}> = ({dict}): JSX.Element => {
     <div className="space-y-3">
       <div className="border border-black p-3">
         <div className="flex justify-between items-center mb-3">
-          <div className="text-base font-medium">{dict?.account?.reviewer?.profile}</div>
+          <div className="text-base">{dict?.account?.reviewer?.profile}</div>
           <button
             onClick={() => router.push(`/reviewer/${address}`)}
             className="text-xs text-blue-600 hover:text-blue-800 underline"
@@ -37,7 +37,7 @@ const ReviewerTab: FunctionComponent<{dict: any}> = ({dict}): JSX.Element => {
         <form className="space-y-3">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
             <div>
-              <label className="block text-xs font-medium mb-1">{dict?.account?.reviewer?.title}</label>
+              <label className="block text-xs mb-1">{dict?.account?.reviewer?.title}</label>
               <input
                 type="text"
                 value={form.title}
@@ -49,7 +49,7 @@ const ReviewerTab: FunctionComponent<{dict: any}> = ({dict}): JSX.Element => {
               />
             </div>
             <div>
-              <label className="block text-xs font-medium mb-1">{dict?.account?.reviewer?.image}</label>
+              <label className="block text-xs mb-1">{dict?.account?.reviewer?.image}</label>
               <input
                 type="file"
                 accept="image/*"
@@ -64,7 +64,7 @@ const ReviewerTab: FunctionComponent<{dict: any}> = ({dict}): JSX.Element => {
             </div>
           </div>
           <div>
-            <label className="block text-xs font-medium mb-1">
+            <label className="block text-xs mb-1">
               {dict?.account?.reviewer?.description}
             </label>
             <textarea
@@ -90,28 +90,28 @@ const ReviewerTab: FunctionComponent<{dict: any}> = ({dict}): JSX.Element => {
       </div>
 
       <div className="border border-black p-3">
-        <div className="text-base font-medium mb-3">{dict?.account?.reviewer?.statistics}</div>
+        <div className="text-base mb-3">{dict?.account?.reviewer?.statistics}</div>
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-2">
           <div className="border border-gray-300 p-2 text-center">
-            <div className="text-sm font-medium">
+            <div className="text-sm">
               {context?.reviewer?.reviewCount}
             </div>
             <div className="text-xs text-gray-600">{dict?.account?.reviewer?.reviews}</div>
           </div>
           <div className="border border-gray-300 p-2 text-center">
-            <div className="text-sm font-medium">
+            <div className="text-sm">
               {context?.reviewer?.totalScore}
             </div>
             <div className="text-xs text-gray-600">{dict?.account?.reviewer?.totalScore}</div>
           </div>
           <div className="border border-gray-300 p-2 text-center">
-            <div className="text-sm font-medium">
+            <div className="text-sm">
               {context?.reviewer?.averageScore}
             </div>
             <div className="text-xs text-gray-600">{dict?.account?.reviewer?.avgScore}</div>
           </div>
           <div className="border border-gray-300 p-2 text-center">
-            <div className="text-sm font-medium">
+            <div className="text-sm">
               {new Date(
                 Number(context?.reviewer?.lastReviewTimestamp) * 1000
               ).toLocaleDateString("en-US", { month: "short", day: "numeric" })}
@@ -122,7 +122,7 @@ const ReviewerTab: FunctionComponent<{dict: any}> = ({dict}): JSX.Element => {
       </div>
 
       <div className="border border-black p-3">
-        <div className="text-base font-medium mb-3">{dict?.account?.reviewer?.recentReviews}</div>
+        <div className="text-base mb-3">{dict?.account?.reviewer?.recentReviews}</div>
         <div id="reviews-scroll" className="h-64 overflow-auto border border-gray-300">
           <InfiniteScroll
             dataLength={reviews.length}
@@ -145,7 +145,7 @@ const ReviewerTab: FunctionComponent<{dict: any}> = ({dict}): JSX.Element => {
                   }
                 >
                   <div className="flex justify-between items-start mb-1">
-                    <span className="text-xs font-medium">
+                    <span className="text-xs">
                       {dict?.account?.reviewer?.review} #{review.reviewId}
                     </span>
                     <span className="text-xs text-gray-600">

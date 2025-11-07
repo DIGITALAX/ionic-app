@@ -13,13 +13,13 @@ export const Error = ({ dict }: { dict: any }) => {
           <div className="flex items-center justify-between mb-4">
             <div className="flex items-center gap-3">
               <div className="w-6 h-6 bg-red-500 border border-black flex items-center justify-center">
-                <span className="text-white text-sm font-bold">✕</span>
+                <span className="text-white text-sm">✕</span>
               </div>
-              <h2 className="text-lg font-medium text-black">{dict?.modals?.error}</h2>
+              <h2 className="text-lg text-black">{dict?.modals?.error}</h2>
             </div>
             <button
               onClick={context.hideError}
-              className="text-black hover:text-gray-600 transition-colors text-xl font-bold"
+              className="text-black hover:text-gray-600 transition-colors text-xl"
             >
               ✕
             </button>
@@ -34,7 +34,7 @@ export const Error = ({ dict }: { dict: any }) => {
           <div className="flex justify-end">
             <button
               onClick={context.hideError}
-              className="px-4 py-2 bg-black hover:bg-gray-800 text-white border border-black transition-colors text-sm font-medium"
+              className="px-4 py-2 bg-black hover:bg-gray-800 text-white border border-black transition-colors text-sm"
             >
               {dict?.modals?.close}
             </button>

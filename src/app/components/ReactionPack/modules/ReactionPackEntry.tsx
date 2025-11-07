@@ -115,7 +115,7 @@ const ReactionPackEntry: FunctionComponent<{ dict: any }> = ({
 
   if (packLoading) {
     return (
-      <div className="w-full max-w-6xl mx-auto font-blocks p-8">
+      <div className="w-full max-w-6xl mx-auto p-8">
         <div className="text-center">{dict?.reactionPack?.loading}</div>
       </div>
     );
@@ -123,14 +123,14 @@ const ReactionPackEntry: FunctionComponent<{ dict: any }> = ({
 
   if (!pack) {
     return (
-      <div className="w-full max-w-6xl mx-auto font-blocks p-8">
+      <div className="w-full max-w-6xl mx-auto p-8">
         <div className="text-center">{dict?.reactionPack?.notFound}</div>
       </div>
     );
   }
 
   return (
-    <div className="w-full max-w-6xl mx-auto font-blocks p-3">
+    <div className="w-full max-w-6xl mx-auto p-3">
       <div className="grid grid-cols-1 xl:grid-cols-4 gap-3">
         <div className="xl:col-span-3 space-y-3">
           <div className="border border-black p-3">
@@ -147,7 +147,7 @@ const ReactionPackEntry: FunctionComponent<{ dict: any }> = ({
 
               <div className="flex-1 space-y-3">
                 <div>
-                  <h1 className="text-lg font-medium mb-1">{pack.packMetadata?.title}</h1>
+                  <h1 className="text-lg mb-1">{pack.packMetadata?.title}</h1>
                   <div className="text-sm text-gray-600">Pack #{pack.packId}</div>
                 </div>
 
@@ -157,19 +157,19 @@ const ReactionPackEntry: FunctionComponent<{ dict: any }> = ({
 
                 <div className="grid grid-cols-2 lg:grid-cols-4 gap-2 text-xs">
                   <div className="border border-gray-300 p-2">
-                    <div className="font-medium text-sm">{formatUnits(BigInt(pack.currentPrice), 18)} MONA</div>
+                    <div className="text-sm">{formatUnits(BigInt(pack.currentPrice), 18)} MONA</div>
                     <div className="text-gray-600">Current Price</div>
                   </div>
                   <div className="border border-gray-300 p-2">
-                    <div className="font-medium text-sm">{pack.soldCount}/{pack.maxEditions}</div>
+                    <div className="text-sm">{pack.soldCount}/{pack.maxEditions}</div>
                     <div className="text-gray-600">Sold</div>
                   </div>
                   <div className="border border-gray-300 p-2">
-                    <div className="font-medium text-sm">{pack.reactions?.length || 0}</div>
+                    <div className="text-sm">{pack.reactions?.length || 0}</div>
                     <div className="text-gray-600">Reactions</div>
                   </div>
                   <div className="border border-gray-300 p-2">
-                    <div className={`font-medium text-sm ${pack.active === "true" ? "text-green-600" : "text-red-600"}`}>
+                    <div className={`text-sm ${pack.active === "true" ? "text-green-600" : "text-red-600"}`}>
                       {pack.active === "true" ? "✓" : "✗"}
                     </div>
                     <div className="text-gray-600">Status</div>
@@ -181,7 +181,7 @@ const ReactionPackEntry: FunctionComponent<{ dict: any }> = ({
 
           <div className="border border-black border-t-0">
             <div className="p-3 border-b border-black bg-gray-50">
-              <div className="text-base font-medium">{dict?.reactionPack?.priceProgression}</div>
+              <div className="text-base">{dict?.reactionPack?.priceProgression}</div>
             </div>
             
             <div className="p-3">
@@ -228,7 +228,7 @@ const ReactionPackEntry: FunctionComponent<{ dict: any }> = ({
           <div className="border border-black border-t-0">
             <div className="p-3 border-b border-black bg-gray-50">
               <div className="flex justify-between items-center">
-                <div className="text-base font-medium">{dict?.reactionPack?.buyerRevenueDistribution}</div>
+                <div className="text-base">{dict?.reactionPack?.buyerRevenueDistribution}</div>
                 {generateBuyerRevenueTable().length > 0 && (
                   <button
                     onClick={() =>
@@ -263,7 +263,7 @@ const ReactionPackEntry: FunctionComponent<{ dict: any }> = ({
                       >
                         <div className="flex justify-between items-start">
                           <div className="text-xs">
-                            <div className="font-medium">
+                            <div >
                               {formatAddress(buyer.address)}
                             </div>
                             <div className="text-gray-600">
@@ -271,7 +271,7 @@ const ReactionPackEntry: FunctionComponent<{ dict: any }> = ({
                             </div>
                           </div>
                           <div className="text-right text-xs">
-                            <div className="font-medium">
+                            <div >
                               {buyer.totalRevenue.toFixed(6)} MONA
                             </div>
                             <div className="text-gray-600">
@@ -331,7 +331,7 @@ const ReactionPackEntry: FunctionComponent<{ dict: any }> = ({
           <div className="border border-black border-t-0">
             <div className="p-3 border-b border-black bg-gray-50">
               <div className="flex justify-between items-center">
-                <div className="text-base font-medium">{dict?.reactionPack?.designer}</div>
+                <div className="text-base">{dict?.reactionPack?.designer}</div>
                 <button
                   onClick={() =>
                     router.push(`/designer/${pack.designerProfile?.wallet}`)
@@ -357,7 +357,7 @@ const ReactionPackEntry: FunctionComponent<{ dict: any }> = ({
                   </div>
                 )}
                 <div className="flex-1">
-                  <div className="font-medium text-sm">
+                  <div className="text-sm">
                     {pack.designerProfile?.metadata?.title || dict?.reactionPack?.unknownDesigner}
                   </div>
                   <div className="text-xs text-gray-600 line-clamp-2">
@@ -373,7 +373,7 @@ const ReactionPackEntry: FunctionComponent<{ dict: any }> = ({
 
           <div className="border border-black border-t-0">
             <div className="p-3 border-b border-black bg-gray-50">
-              <div className="text-base font-medium">
+              <div className="text-base">
                 {dict?.reactionPack?.reactions} ({pack.reactions?.length || 0})
               </div>
             </div>
@@ -397,7 +397,7 @@ const ReactionPackEntry: FunctionComponent<{ dict: any }> = ({
                       </div>
 
                       <div className="space-y-2">
-                        <div className="font-medium text-xs line-clamp-1">
+                        <div className="text-xs line-clamp-1">
                           {reaction.reactionMetadata?.title ||
                             dict?.reactionPack?.untitledReaction}
                         </div>
@@ -449,40 +449,40 @@ const ReactionPackEntry: FunctionComponent<{ dict: any }> = ({
 
         <div className="space-y-3">
           <div className="border border-black p-3">
-            <div className="text-base font-medium mb-3">{dict?.reactionPack?.packInfo}</div>
+            <div className="text-base mb-3">{dict?.reactionPack?.packInfo}</div>
 
             <div className="space-y-2 text-xs">
               <div className="flex justify-between">
                 <span className="text-gray-600">{dict?.reactionPack?.packId}:</span>
-                <span className="font-medium">#{pack.packId}</span>
+                <span >#{pack.packId}</span>
               </div>
               <div className="flex justify-between">
                 <span className="text-gray-600">{dict?.reactionPack?.currentPrice}:</span>
-                <span className="font-medium">{formatUnits(BigInt(pack.currentPrice), 18)} MONA</span>
+                <span >{formatUnits(BigInt(pack.currentPrice), 18)} MONA</span>
               </div>
               <div className="flex justify-between">
                 <span className="text-gray-600">{dict?.reactionPack?.basePrice}:</span>
-                <span className="font-medium">{formatUnits(BigInt(pack.basePrice), 18)} MONA</span>
+                <span >{formatUnits(BigInt(pack.basePrice), 18)} MONA</span>
               </div>
               <div className="flex justify-between">
                 <span className="text-gray-600">{dict?.reactionPack?.priceIncrement}:</span>
-                <span className="font-medium">{formatUnits(BigInt(pack.priceIncrement), 18)} MONA</span>
+                <span >{formatUnits(BigInt(pack.priceIncrement), 18)} MONA</span>
               </div>
               <div className="flex justify-between">
                 <span className="text-gray-600">{dict?.reactionPack?.editions}:</span>
-                <span className="font-medium">
+                <span >
                   {pack.soldCount}/{pack.maxEditions}
                 </span>
               </div>
               <div className="flex justify-between">
                 <span className="text-gray-600">{dict?.reactionPack?.conductorReserved}:</span>
-                <span className="font-medium">{pack.conductorReservedSpots}</span>
+                <span >{pack.conductorReservedSpots}</span>
               </div>
               <div className="flex justify-between">
                 <span className="text-gray-600">{dict?.reactionPack?.status}:</span>
                 <span
                   className={
-                    pack.active === "true" ? "text-green-600 font-medium" : "text-red-600 font-medium"
+                    pack.active === "true" ? "text-green-600" : "text-red-600"
                   }
                 >
                   {pack.active === "true" ? dict?.reactionPack?.active : dict?.reactionPack?.inactive}
@@ -500,7 +500,7 @@ const ReactionPackEntry: FunctionComponent<{ dict: any }> = ({
           </div>
 
           <div className="border border-black p-3">
-            <div className="text-base font-medium mb-3">{dict?.reactionPack?.purchaseHistory}</div>
+            <div className="text-base mb-3">{dict?.reactionPack?.purchaseHistory}</div>
 
             {pack.purchases && pack.purchases.length > 0 ? (
               <div className="space-y-2 max-h-64 overflow-y-auto">
@@ -511,7 +511,7 @@ const ReactionPackEntry: FunctionComponent<{ dict: any }> = ({
                   >
                     <div className="flex justify-between items-start mb-1">
                       <div className="text-xs">
-                        <div className="font-medium">
+                        <div >
                           {dict?.reactionPack?.edition} #{purchase.editionNumber}
                         </div>
                         <div className="text-gray-600">
@@ -519,7 +519,7 @@ const ReactionPackEntry: FunctionComponent<{ dict: any }> = ({
                         </div>
                       </div>
                       <div className="text-right text-xs">
-                        <div className="font-medium">
+                        <div >
                           {formatUnits(BigInt(purchase.price), 18)} MONA
                         </div>
                         <div className="text-gray-600">

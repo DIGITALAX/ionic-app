@@ -91,7 +91,7 @@ const useConductor = (dict?: any) => {
 
     try {
       let image = form.image;
-      if (image !== "") {
+      if (typeof image !== "string") {
         const formData = new FormData();
         formData.append("file", image as File);
 
@@ -225,7 +225,7 @@ const useConductor = (dict?: any) => {
         address: contracts.designers,
         abi: ABIS.IonicDesigners,
         functionName: "inviteDesigner",
-        args: [designer, Number(context?.conductor?.conductorId)],
+        args: [designer],
         account: address,
       });
       await publicClient.waitForTransactionReceipt({ hash });

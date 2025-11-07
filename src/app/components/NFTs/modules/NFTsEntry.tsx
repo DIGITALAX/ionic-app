@@ -13,9 +13,9 @@ const NFTsEntry: FunctionComponent<{ dict: any }> = ({ dict }): JSX.Element => {
   const [showSubmitForm, setShowSubmitForm] = useState<boolean>(false);
 
   return (
-    <div className="w-full max-w-6xl mx-auto font-blocks p-4">
+    <div className="w-full max-w-6xl mx-auto p-4">
       <div className="flex justify-between items-center mb-6">
-        <h1 className="text-xl font-medium">{dict?.nfts?.title}</h1>
+        <h1 className="text-xl">{dict?.nfts?.title}</h1>
         <button
           onClick={() => setShowSubmitForm(!showSubmitForm)}
           className="px-3 py-1 text-xs bg-black text-white border border-black hover:bg-gray-900 transition-colors"
@@ -26,7 +26,7 @@ const NFTsEntry: FunctionComponent<{ dict: any }> = ({ dict }): JSX.Element => {
 
       {showSubmitForm && (
         <div className="mb-6 border border-black p-3 bg-gray-50">
-          <h2 className="text-sm font-medium mb-3">{dict?.nfts?.submitNewNft}</h2>
+          <h2 className="text-sm mb-3">{dict?.nfts?.submitNewNft}</h2>
           <form className="grid grid-cols-1 md:grid-cols-4 gap-3">
             <div>
               <label className="block text-xs mb-1">{dict?.nfts?.tokenAddress}</label>
@@ -106,7 +106,7 @@ const NFTsEntry: FunctionComponent<{ dict: any }> = ({ dict }): JSX.Element => {
                     </div>
                   )}
                   <div className="p-2">
-                    <h3 className="text-xs font-medium line-clamp-1">
+                    <h3 className="text-xs line-clamp-1">
                       {nft.metadata?.title || `NFT #${nft.nftId}`}
                     </h3>
                     <div className="text-xs text-gray-600">

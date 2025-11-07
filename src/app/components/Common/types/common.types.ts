@@ -11,6 +11,22 @@ export interface HeaderProps {
   dict: any;
 }
 
+export interface RainingImage {
+  id: string;
+  x: number;
+  imageIndex: number;
+  isInBottomRow: boolean;
+}
+
+
+export interface FallingImage {
+  id: string;
+  x: number;
+  y: number;
+  imageIndex: number;
+}
+
+
 export interface NFT {
   id: string;
   nftId: string;

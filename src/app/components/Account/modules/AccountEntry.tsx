@@ -12,7 +12,7 @@ const AccountEntry: FunctionComponent<{ dict: any }> = ({
   const [activeTab, setActiveTab] = useState<string>("conductor");
 
   return (
-    <div className="w-full max-w-5xl mx-auto font-blocks p-3">
+    <div className="w-full max-w-5xl mx-auto p-3">
       <div className="border border-black mb-3">
         <div className="flex">
           <button

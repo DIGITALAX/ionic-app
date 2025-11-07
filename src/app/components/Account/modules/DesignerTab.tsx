@@ -71,7 +71,7 @@ const DesignerTab: FunctionComponent<{dict: any}> = ({dict}): JSX.Element => {
         <div className="space-y-3">
       <div className="border border-black p-3">
         <div className="flex justify-between items-center mb-3">
-          <div className="text-base font-medium">{dict?.account?.designer?.profile}</div>
+          <div className="text-base">{dict?.account?.designer?.profile}</div>
           <button
             onClick={() => router.push(`/designer/${address}`)}
             className="text-xs text-blue-600 hover:text-blue-800 underline"
@@ -82,7 +82,7 @@ const DesignerTab: FunctionComponent<{dict: any}> = ({dict}): JSX.Element => {
         <form className="space-y-3">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
             <div>
-              <label className="block text-xs font-medium mb-1">{dict?.account?.designer?.title}</label>
+              <label className="block text-xs mb-1">{dict?.account?.designer?.title}</label>
               <input
                 type="text"
                 value={form.title}
@@ -94,7 +94,7 @@ const DesignerTab: FunctionComponent<{dict: any}> = ({dict}): JSX.Element => {
               />
             </div>
             <div>
-              <label className="block text-xs font-medium mb-1">{dict?.account?.designer?.image}</label>
+              <label className="block text-xs mb-1">{dict?.account?.designer?.image}</label>
               <input
                 type="file"
                 accept="image/*"
@@ -109,7 +109,7 @@ const DesignerTab: FunctionComponent<{dict: any}> = ({dict}): JSX.Element => {
             </div>
           </div>
           <div>
-            <label className="block text-xs font-medium mb-1">
+            <label className="block text-xs mb-1">
               {dict?.account?.designer?.description}
             </label>
             <textarea
@@ -135,16 +135,16 @@ const DesignerTab: FunctionComponent<{dict: any}> = ({dict}): JSX.Element => {
       </div>
 
       <div className="border border-black p-3">
-        <div className="text-base font-medium mb-3">{dict?.account?.designer?.statistics}</div>
+        <div className="text-base mb-3">{dict?.account?.designer?.statistics}</div>
         <div className="grid grid-cols-3 gap-2">
           <div className="border border-gray-300 p-2 text-center">
-            <div className="text-sm font-medium">
+            <div className="text-sm">
               {context?.designer?.packCount}
             </div>
             <div className="text-xs text-gray-600">{dict?.account?.designer?.packs}</div>
           </div>
           <div className="border border-gray-300 p-2 text-center">
-            <div className="text-sm font-medium">
+            <div className="text-sm">
               {new Date(
                 Number(context?.designer?.inviteTimestamp) * 1000
               ).toLocaleDateString("en-US", { month: "short", day: "numeric" })}
@@ -152,7 +152,7 @@ const DesignerTab: FunctionComponent<{dict: any}> = ({dict}): JSX.Element => {
             <div className="text-xs text-gray-600">{dict?.account?.designer?.invited}</div>
           </div>
           <div className="border border-gray-300 p-2 text-center">
-            <div className="text-sm font-medium">
+            <div className="text-sm">
               #{context?.designer?.invitedBy}
             </div>
             <div className="text-xs text-gray-600">{dict?.account?.designer?.invitedBy}</div>
@@ -161,7 +161,7 @@ const DesignerTab: FunctionComponent<{dict: any}> = ({dict}): JSX.Element => {
       </div>
 
       <div className="border border-black p-3">
-        <div className="text-base font-medium mb-3">{dict?.account?.designer?.yourPacks}</div>
+        <div className="text-base mb-3">{dict?.account?.designer?.yourPacks}</div>
         <div id="packs-scroll" className="h-64 overflow-auto border border-gray-300">
           <InfiniteScroll
             dataLength={packs.length}
@@ -193,7 +193,7 @@ const DesignerTab: FunctionComponent<{dict: any}> = ({dict}): JSX.Element => {
                     </div>
                     <div className="flex-1">
                       <div className="flex justify-between items-start mb-1">
-                        <span className="text-xs font-medium">
+                        <span className="text-xs">
                           {pack.packMetadata.title}
                         </span>
                         <span className="text-xs text-gray-600">
@@ -232,12 +232,12 @@ const DesignerTab: FunctionComponent<{dict: any}> = ({dict}): JSX.Element => {
       {activeSubTab === "create" && (
         <div className="border border-black p-3">
           <div>
-            <div className="text-base font-medium mb-3">{dict?.account?.designer?.createPack}</div>
+            <div className="text-base mb-3">{dict?.account?.designer?.createPack}</div>
             <form className="space-y-4">
               <div className="space-y-3">
-                <h3 className="text-base font-medium">{dict?.account?.designer?.packMetadata}</h3>
+                <h3 className="text-base">{dict?.account?.designer?.packMetadata}</h3>
                 <div>
-                  <label className="block text-xs font-medium mb-1">{dict?.account?.designer?.packTitle}</label>
+                  <label className="block text-xs mb-1">{dict?.account?.designer?.packTitle}</label>
                   <input
                     type="text"
                     value={createPackData.packMetadata.title}
@@ -252,7 +252,7 @@ const DesignerTab: FunctionComponent<{dict: any}> = ({dict}): JSX.Element => {
                   />
                 </div>
                 <div>
-                  <label className="block text-xs font-medium mb-1">{dict?.account?.designer?.packDescription}</label>
+                  <label className="block text-xs mb-1">{dict?.account?.designer?.packDescription}</label>
                   <textarea
                     value={createPackData.packMetadata.description}
                     onChange={(e) =>
@@ -266,7 +266,7 @@ const DesignerTab: FunctionComponent<{dict: any}> = ({dict}): JSX.Element => {
                   />
                 </div>
                 <div>
-                  <label className="block text-xs font-medium mb-1">{dict?.account?.designer?.packImage}</label>
+                  <label className="block text-xs mb-1">{dict?.account?.designer?.packImage}</label>
                   <input
                     type="file"
                     accept="image/*"
@@ -282,9 +282,9 @@ const DesignerTab: FunctionComponent<{dict: any}> = ({dict}): JSX.Element => {
               </div>
 
               <div className="space-y-3">
-                <h3 className="text-base font-medium">{dict?.account?.designer?.packSettings}</h3>
+                <h3 className="text-base">{dict?.account?.designer?.packSettings}</h3>
                 <div>
-                  <label className="block text-xs font-medium mb-1">{dict?.account?.designer?.maxEditions}</label>
+                  <label className="block text-xs mb-1">{dict?.account?.designer?.maxEditions}</label>
                   <input
                     type="number"
                     min="1"
@@ -299,7 +299,7 @@ const DesignerTab: FunctionComponent<{dict: any}> = ({dict}): JSX.Element => {
                   />
                 </div>
                 <div>
-                  <label className="block text-xs font-medium mb-1">{dict?.account?.designer?.conductorSpots}</label>
+                  <label className="block text-xs mb-1">{dict?.account?.designer?.conductorSpots}</label>
                   <input
                     type="number"
                     min="0"
@@ -318,7 +318,7 @@ const DesignerTab: FunctionComponent<{dict: any}> = ({dict}): JSX.Element => {
 
               <div className="space-y-3">
                 <div className="flex justify-between items-center">
-                  <h3 className="text-base font-medium">{dict?.account?.designer?.reactions} ({createPackData.reactions.length}/10)</h3>
+                  <h3 className="text-base">{dict?.account?.designer?.reactions} ({createPackData.reactions.length}/10)</h3>
                   <button
                     type="button"
                     onClick={() => {
@@ -347,7 +347,7 @@ const DesignerTab: FunctionComponent<{dict: any}> = ({dict}): JSX.Element => {
                   {createPackData.reactions.map((reaction, index) => (
                     <div key={index} className="border border-gray-300 p-3 space-y-2 w-80 flex-shrink-0">
                       <div className="flex justify-between items-center">
-                        <span className="text-sm font-medium">{dict?.account?.designer?.reaction} #{index + 1}</span>
+                        <span className="text-sm">{dict?.account?.designer?.reaction} #{index + 1}</span>
                         <button
                           type="button"
                           onClick={() => {
@@ -363,7 +363,7 @@ const DesignerTab: FunctionComponent<{dict: any}> = ({dict}): JSX.Element => {
                       </div>
                       <div className="grid grid-cols-2 gap-2">
                         <div>
-                          <label className="block text-xs font-medium mb-1">{dict?.account?.designer?.reactionTitle}</label>
+                          <label className="block text-xs mb-1">{dict?.account?.designer?.reactionTitle}</label>
                           <input
                             type="text"
                             value={reaction.title}
@@ -377,7 +377,7 @@ const DesignerTab: FunctionComponent<{dict: any}> = ({dict}): JSX.Element => {
                           />
                         </div>
                         <div>
-                          <label className="block text-xs font-medium mb-1">{dict?.account?.designer?.reactionModel}</label>
+                          <label className="block text-xs mb-1">{dict?.account?.designer?.reactionModel}</label>
                           <input
                             type="text"
                             value={reaction.model || ""}
@@ -392,7 +392,7 @@ const DesignerTab: FunctionComponent<{dict: any}> = ({dict}): JSX.Element => {
                         </div>
                       </div>
                       <div>
-                        <label className="block text-xs font-medium mb-1">{dict?.account?.designer?.reactionDescription}</label>
+                        <label className="block text-xs mb-1">{dict?.account?.designer?.reactionDescription}</label>
                         <textarea
                           value={reaction.description}
                           onChange={(e) => {
@@ -406,7 +406,7 @@ const DesignerTab: FunctionComponent<{dict: any}> = ({dict}): JSX.Element => {
                       </div>
                       <div className="grid grid-cols-2 gap-2">
                         <div>
-                          <label className="block text-xs font-medium mb-1">{dict?.account?.designer?.reactionWorkflow}</label>
+                          <label className="block text-xs mb-1">{dict?.account?.designer?.reactionWorkflow}</label>
                           <input
                             type="text"
                             value={reaction.workflow || ""}
@@ -420,7 +420,7 @@ const DesignerTab: FunctionComponent<{dict: any}> = ({dict}): JSX.Element => {
                           />
                         </div>
                         <div>
-                          <label className="block text-xs font-medium mb-1">{dict?.account?.designer?.reactionPrompt}</label>
+                          <label className="block text-xs mb-1">{dict?.account?.designer?.reactionPrompt}</label>
                           <input
                             type="text"
                             value={reaction.prompt || ""}
@@ -435,7 +435,7 @@ const DesignerTab: FunctionComponent<{dict: any}> = ({dict}): JSX.Element => {
                         </div>
                       </div>
                       <div>
-                        <label className="block text-xs font-medium mb-1">{dict?.account?.designer?.reactionImage}</label>
+                        <label className="block text-xs mb-1">{dict?.account?.designer?.reactionImage}</label>
                         <input
                           type="file"
                           accept="image/*"

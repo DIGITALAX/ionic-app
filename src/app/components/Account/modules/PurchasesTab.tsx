@@ -28,7 +28,7 @@ const PurchasesTab: FunctionComponent<{dict: any}> = ({dict}): JSX.Element => {
 
   return (
     <div className="border border-black p-3">
-      <div className="text-base font-medium mb-3">{dict?.account?.purchases?.title}</div>
+      <div className="text-base mb-3">{dict?.account?.purchases?.title}</div>
 
       <div id="purchases-scroll" className="h-64 overflow-auto border border-gray-300">
         <InfiniteScroll
@@ -61,7 +61,7 @@ const PurchasesTab: FunctionComponent<{dict: any}> = ({dict}): JSX.Element => {
                   </div>
                   <div className="flex-1">
                     <div className="flex justify-between items-start mb-1">
-                      <span className="text-xs font-medium">
+                      <span className="text-xs">
                         {purchase.pack.packMetadata.title}
                       </span>
                       <span className="text-xs text-gray-600">

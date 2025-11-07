@@ -37,7 +37,7 @@ const ConductorTab: FunctionComponent<{ dict: any }> = ({ dict }): JSX.Element =
     return (
       <div className="border border-black p-3">
         <div className="text-center space-y-3">
-          <div className="text-lg font-medium">{dict?.account?.conductor?.verificationRequired}</div>
+          <div className="text-lg">{dict?.account?.conductor?.verificationRequired}</div>
           <div className="text-sm text-gray-600">
             {dict?.account?.conductor?.verificationMessage}
           </div>
@@ -56,11 +56,11 @@ const ConductorTab: FunctionComponent<{ dict: any }> = ({ dict }): JSX.Element =
   if (!context?.conductor) {
     return (
       <div className="border border-black p-3">
-        <div className="text-base font-medium mb-3">{dict?.account?.conductor?.registerAsConductor}</div>
+        <div className="text-base mb-3">{dict?.account?.conductor?.registerAsConductor}</div>
         <form className="space-y-3">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
             <div>
-              <label className="block text-xs font-medium mb-1">{dict?.account?.conductor?.title}</label>
+              <label className="block text-xs mb-1">{dict?.account?.conductor?.title}</label>
               <input
                 type="text"
                 value={form.title}
@@ -72,7 +72,7 @@ const ConductorTab: FunctionComponent<{ dict: any }> = ({ dict }): JSX.Element =
               />
             </div>
             <div>
-              <label className="block text-xs font-medium mb-1">{dict?.account?.conductor?.image}</label>
+              <label className="block text-xs mb-1">{dict?.account?.conductor?.image}</label>
               <input
                 type="file"
                 accept="image/*"
@@ -87,7 +87,7 @@ const ConductorTab: FunctionComponent<{ dict: any }> = ({ dict }): JSX.Element =
             </div>
           </div>
           <div>
-            <label className="block text-xs font-medium mb-1">
+            <label className="block text-xs mb-1">
               {dict?.account?.conductor?.description}
             </label>
             <textarea
@@ -122,7 +122,7 @@ const ConductorTab: FunctionComponent<{ dict: any }> = ({ dict }): JSX.Element =
     <div className="space-y-3">
       <div className="border border-black p-3">
         <div className="flex justify-between items-center mb-3">
-          <div className="text-base font-medium">{dict?.account?.conductor?.profile}</div>
+          <div className="text-base">{dict?.account?.conductor?.profile}</div>
           <button
             onClick={() => router.push(`/conductor/${conductorData.conductorId}`)}
             className="text-xs text-blue-600 hover:text-blue-800 underline"
@@ -133,7 +133,7 @@ const ConductorTab: FunctionComponent<{ dict: any }> = ({ dict }): JSX.Element =
         <form className="space-y-3">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
             <div>
-              <label className="block text-xs font-medium mb-1">{dict?.account?.conductor?.title}</label>
+              <label className="block text-xs mb-1">{dict?.account?.conductor?.title}</label>
               <input
                 type="text"
                 value={form.title}
@@ -145,7 +145,7 @@ const ConductorTab: FunctionComponent<{ dict: any }> = ({ dict }): JSX.Element =
               />
             </div>
             <div>
-              <label className="block text-xs font-medium mb-1">{dict?.account?.conductor?.image}</label>
+              <label className="block text-xs mb-1">{dict?.account?.conductor?.image}</label>
               <input
                 type="file"
                 accept="image/*"
@@ -160,7 +160,7 @@ const ConductorTab: FunctionComponent<{ dict: any }> = ({ dict }): JSX.Element =
             </div>
           </div>
           <div>
-            <label className="block text-xs font-medium mb-1">
+            <label className="block text-xs mb-1">
               {dict?.account?.conductor?.description}
             </label>
             <textarea
@@ -198,26 +198,26 @@ const ConductorTab: FunctionComponent<{ dict: any }> = ({ dict }): JSX.Element =
       </div>
 
       <div className="border border-black p-3">
-        <div className="text-base font-medium mb-3">{dict?.account?.conductor?.statistics}</div>
+        <div className="text-base mb-3">{dict?.account?.conductor?.statistics}</div>
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-2">
           <div className="border border-gray-300 p-2 text-center">
-            <div className="text-sm font-medium">
+            <div className="text-sm">
               {conductorData.appraisalCount}
             </div>
             <div className="text-xs text-gray-600">{dict?.account?.conductor?.appraisals}</div>
           </div>
           <div className="border border-gray-300 p-2 text-center">
-            <div className="text-sm font-medium">
+            <div className="text-sm">
               {conductorData.averageScore}
             </div>
             <div className="text-xs text-gray-600">{dict?.account?.conductor?.avgScore}</div>
           </div>
           <div className="border border-gray-300 p-2 text-center">
-            <div className="text-sm font-medium">{conductorData.reviewCount}</div>
+            <div className="text-sm">{conductorData.reviewCount}</div>
             <div className="text-xs text-gray-600">{dict?.account?.conductor?.reviewCount}</div>
           </div>
           <div className="border border-gray-300 p-2 text-center">
-            <div className="text-sm font-medium">
+            <div className="text-sm">
               {conductorData.averageReviewScore}
             </div>
             <div className="text-xs text-gray-600">{dict?.account?.conductor?.reviewScore}</div>
@@ -226,7 +226,7 @@ const ConductorTab: FunctionComponent<{ dict: any }> = ({ dict }): JSX.Element =
       </div>
 
       <div className="border border-black p-3">
-        <div className="text-base font-medium mb-3">{dict?.account?.conductor?.appraisals}</div>
+        <div className="text-base mb-3">{dict?.account?.conductor?.appraisals}</div>
         <div id="appraisals-scroll" className="h-64 overflow-auto border border-gray-300">
           <InfiniteScroll
             dataLength={
@@ -254,7 +254,7 @@ const ConductorTab: FunctionComponent<{ dict: any }> = ({ dict }): JSX.Element =
                     }
                   >
                     <div className="flex justify-between items-start mb-1">
-                      <span className="text-xs font-medium">
+                      <span className="text-xs">
                         {dict?.account?.conductor?.nft} #{appraisal.nftId}
                       </span>
                       <span className="text-xs text-gray-600">
@@ -283,7 +283,7 @@ const ConductorTab: FunctionComponent<{ dict: any }> = ({ dict }): JSX.Element =
       </div>
 
       <div className="border border-black p-3">
-        <div className="text-base font-medium mb-3">{dict?.account?.conductor?.designerInvites}</div>
+        <div className="text-base mb-3">{dict?.account?.conductor?.designerInvites}</div>
         <div className="space-y-3">
           <div>
             <div className="text-xs text-gray-600 mb-2">
@@ -315,7 +315,7 @@ const ConductorTab: FunctionComponent<{ dict: any }> = ({ dict }): JSX.Element =
           </div>
 
           <div>
-            <div className="text-sm font-medium mb-2">{dict?.account?.conductor?.invitedDesigners}</div>
+            <div className="text-sm mb-2">{dict?.account?.conductor?.invitedDesigners}</div>
             <div className="space-y-1 max-h-48 overflow-y-auto border border-gray-300">
               {(conductorData.invitedDesigners || []).map((designer, index) => (
                 <div
@@ -335,7 +335,7 @@ const ConductorTab: FunctionComponent<{ dict: any }> = ({ dict }): JSX.Element =
                       </div>
                     )}
                     <div>
-                      <div className="text-xs font-medium">
+                      <div className="text-xs">
                         {designer.metadata?.title ||
                           `${designer.wallet.slice(
                             0,

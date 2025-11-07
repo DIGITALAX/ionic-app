@@ -14,9 +14,9 @@ const MarketEntry: FunctionComponent<{ dict: any }> = ({
   const { packsLoading, packs, hasMorePacks, loadMorePacks } = useMarket();
 
   return (
-    <div className="w-full max-w-6xl mx-auto font-blocks p-3">
+    <div className="w-full max-w-6xl mx-auto p-3">
       <div className="border border-black p-3 mb-3">
-        <h1 className="text-lg font-medium mb-1">{dict?.market?.title}</h1>
+        <h1 className="text-lg mb-1">{dict?.market?.title}</h1>
         <p className="text-sm text-gray-600">{dict?.market?.description}</p>
       </div>
 
@@ -50,7 +50,7 @@ const MarketEntry: FunctionComponent<{ dict: any }> = ({
                 </div>
 
                 <div className="space-y-2">
-                  <h3 className="text-sm font-medium line-clamp-1">{pack.packMetadata?.title}</h3>
+                  <h3 className="text-sm line-clamp-1">{pack.packMetadata?.title}</h3>
                   
                   <p className="text-xs text-gray-600 line-clamp-2">
                     {pack.packMetadata?.description || dict?.market?.noDescription}
@@ -73,11 +73,11 @@ const MarketEntry: FunctionComponent<{ dict: any }> = ({
 
                   <div className="grid grid-cols-2 gap-2 text-xs">
                     <div>
-                      <div className="font-medium">{formatUnits(BigInt(pack.currentPrice), 18)} MONA</div>
+                      <div >{formatUnits(BigInt(pack.currentPrice), 18)} MONA</div>
                       <div className="text-gray-600">Price</div>
                     </div>
                     <div>
-                      <div className="font-medium">{pack.soldCount}/{pack.maxEditions}</div>
+                      <div >{pack.soldCount}/{pack.maxEditions}</div>
                       <div className="text-gray-600">Sold</div>
                     </div>
                   </div>
