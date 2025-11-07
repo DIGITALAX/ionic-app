@@ -2,7 +2,8 @@ import type { Metadata } from "next";
 import "./globals.css";
 import Providers from "./providers";
 import { LOCALES } from "./lib/constants";
-import { AllEffectsContainer } from "./components/Common/modules/AllEffectsContainer";
+import { PhysicsEffect } from "./components/Common/modules/PhysicsEffect";
+import { FallingImagesEffect } from "./components/Common/modules/FallingImagesEffect";
 
 export type tParams = Promise<{ lang: string }>;
 
@@ -111,7 +112,8 @@ export default function RootLayout({
       </head>
       <body>
         <Providers>
-          <AllEffectsContainer />
+          <PhysicsEffect />
+          <FallingImagesEffect />
           <div className="bg-cat-hero relative w-full flex">
             <div className="relative w-full h-fit overflow-x-hidden bg-black/70 flex">
               {children}

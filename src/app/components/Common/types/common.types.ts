@@ -11,12 +11,12 @@ export interface HeaderProps {
   dict: any;
 }
 
-export interface RainingImage {
-  id: string;
-  x: number;
+export interface FallingImageBody {
+  body: Matter.Body;
   imageIndex: number;
-  isInBottomRow: boolean;
+  id: string;
 }
+
 
 
 export interface FallingImage {
