@@ -57,8 +57,7 @@ export const MatterPhysicsContainer = () => {
       });
 
       const heightThreshold = height * 0.5;
-      const isAboveThreshold = maxHeightRef.current < heightThreshold;
-      const zIndex = isAboveThreshold ? 1000 + bodiesToRenderRef.current.length : 0;
+      const zIndex = maxHeightRef.current >= heightThreshold ? 0 : 10000;
 
       const fallingImage: BodyWithZIndex = {
         body,
@@ -70,6 +69,17 @@ export const MatterPhysicsContainer = () => {
       World.add(engine.world, body);
       bodiesToRenderRef.current.push(fallingImage);
     };
+
+    const handleReset = () => {
+      bodiesToRenderRef.current.forEach((item) => {
+        World.remove(engine.world, item.body);
+      });
+      bodiesToRenderRef.current = [];
+      setBodies([]);
+      maxHeightRef.current = 0;
+    };
+
+    window.addEventListener("resetStickers", handleReset);
 
     const rainInterval = setInterval(() => {
       const randomX = Math.random() * width;
@@ -88,6 +98,17 @@ export const MatterPhysicsContainer = () => {
       if (visibleBodies.length > 0) {
         const minY = Math.min(...visibleBodies.map((item) => item.body.position.y));
         maxHeightRef.current = height - minY;
+        const heightThreshold = height * 0.5;
+        const isOverThreshold = maxHeightRef.current >= heightThreshold;
+
+        visibleBodies.forEach((item) => {
+          const idNumber = parseInt(item.id.split('-')[1]);
+          if (isOverThreshold) {
+            item.zIndex = idNumber;
+          } else {
+            item.zIndex = 10000 + idNumber;
+          }
+        });
       } else {
         maxHeightRef.current = 0;
       }

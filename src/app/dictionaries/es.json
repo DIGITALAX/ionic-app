@@ -347,10 +347,11 @@
     "noPurchasesYet": "Sin compras aún"
   },
   "notice": {
-    "paragraph1": "las plataformas explotaron tu gusto durante una década, o dos. cada like, cada compartición, cada descubrimiento perfecto antes que nadie lo encontrara. tú moviste la cultura. ellos hicieron miles de millones. tú obtuviste corazones. pequeña validación roja. dopamina disfrazada de capital social mientras tu curación entrenaba sus algoritmos, tus descubrimientos se convirtieron en datos de orientación para ellos, tu trabajo de evaluación construyó su valoración. toda la economía del cool funcionaba con tu trabajo no remunerado. repitamos eso. déjalo que penetre. los medios lo controlan todo en la era de las plataformas. ¿estamos atrapados aquí?",
-    "paragraph2": "mira, lee, escucha, usa, avergüénzate, consume, repite. ¿alguna vez te detuviste a pensar: qué pasa si reclamamos la capacidad de producir? rompe las paredes artificiales que hacen que la moda parezca alguna categoría separada y exótica. un patrón de prenda es medios. un derecho de producción es medios. una vez que lo ves, el marco de evaluación se vuelve universal en lugar de nicho. la moda en sí - lo que usamos, en cualquier lugar - es medios.",
-    "paragraph3": "ese es el zeitgeist de ahora. los modelos de extracción se rompen, mientras te dejas dispersar y luchar por reemplazos decentes. si el modelo viejo está roto, ¿cómo sabes cuánto podría valer cualquier cosa nueva? construimos nuevos sistemas para evaluar medios en todas sus formas.",
-    "paragraph4": "haz clic; podev3 es Ionic."
+    "paragraph1": "las plataformas explotaron tu gusto durante una década, o dos. cada like, cada compartición, cada descubrimiento perfecto antes que nadie lo encontrara. tú moviste la cultura. ellos hicieron miles de millones. tú obtuviste corazones. pequeña validación roja.",
+    "paragraph2": "dopamina disfrazada de capital social mientras tu curación entrenaba sus algoritmos, tus descubrimientos se convirtieron en datos de orientación para ellos, tu trabajo de evaluación construyó su valoración. toda la economía del cool funcionaba con tu trabajo no remunerado. repitamos eso. déjalo que penetre. los medios lo controlan todo en la era de las plataformas. ¿estamos atrapados aquí?",
+    "paragraph3": "mira, lee, escucha, usa, avergüénzate, consume, repite. ¿alguna vez te detuviste a pensar: qué pasa si reclamamos la capacidad de producir? rompe las paredes artificiales que hacen que la moda parezca alguna categoría separada y exótica. un patrón de prenda es medios. un derecho de producción es medios. una vez que lo ves, el marco de evaluación se vuelve universal en lugar de nicho. la moda en sí - lo que usamos, en cualquier lugar - es medios.",
+    "paragraph4": "ese es el zeitgeist de ahora. los modelos de extracción se rompen, mientras te dejas dispersar y luchar por reemplazos decentes. si el modelo viejo está roto, ¿cómo sabes cuánto podría valer cualquier cosa nueva? construimos nuevos sistemas para evaluar medios en todas sus formas.",
+    "paragraph5": "haz clic; podev3 es Ionic."
   },
   "modals": {
     "success": "ÉXITO",

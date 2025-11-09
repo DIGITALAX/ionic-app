@@ -1,13 +1,8 @@
 @import "tailwindcss";
 
 @font-face {
-  font-family: "Block";
-  src: url("/fonts/block.ttf");
-}
-
-@font-face {
-  font-family: "Blocks";
-  src: url("/fonts/blocks.ttf");
+  font-family: "Roubaix";
+  src: url("/fonts/Roubaix.ttf");
 }
 
 @font-face {
@@ -16,21 +11,35 @@
 }
 
 @font-face {
+  font-family: "Brassia";
+  src: url("/fonts/Brassia.otf");
+}
+
+@font-face {
   font-family: "Mid";
   src: url("/fonts/Midnight.ttf");
 }
 
-@layer utilities {
-  .font-block {
-    font-family: "Block";
-  }
+@font-face {
+  font-family: "Azabache";
+  src: url("/fonts/Azabache.ttf");
+}
 
+@layer utilities {
   .font-mid {
     font-family: "Mid";
   }
 
-  .font-blocks {
-    font-family: "Blocks";
+  .font-aza {
+    font-family: "Azabache";
+  }
+
+  .font-brass {
+    font-family: "Brassia";
+  }
+
+  .font-rou {
+    font-family: "Roubaix";
   }
 
   .font-girl {
@@ -40,89 +49,11 @@
   .text-xxs {
     font-size: 0.6rem;
   }
-
-    .fancy-border-white::before {
-    content: "";
-    position: absolute;
-    inset: 0;
-    pointer-events: none;
-    mask: radial-gradient(
-          12px at 12px 12px,
-          transparent calc(100% - 2px),
-          black calc(100% - 2px) 100%,
-          transparent
-        ) -12px -12px,
-      radial-gradient(
-          12px at calc(100% - 12px) 12px,
-          transparent calc(100% - 2px),
-          black calc(100% - 2px) 100%,
-          transparent
-        )
-        12px -12px,
-      radial-gradient(
-          12px at calc(100% - 12px) calc(100% - 12px),
-          transparent calc(100% - 2px),
-          black calc(100% - 2px) 100%,
-          transparent
-        )
-        12px 12px,
-      radial-gradient(
-          12px at 12px calc(100% - 12px),
-          transparent calc(100% - 2px),
-          black calc(100% - 2px) 100%,
-          transparent
-        ) -12px 12px,
-      linear-gradient(90deg, black 2px, transparent 0) -1px 50% / 100% calc(
-          100% - 24px + 2px
-        ) repeat-x,
-      linear-gradient(black 2px, transparent 0) 50% -1px / calc(
-          100% - 24px + 2px
-        ) 100% repeat-y;
-    -webkit-mask: radial-gradient(
-          12px at 12px 12px,
-          transparent calc(100% - 2px),
-          black calc(100% - 2px) 100%,
-          transparent
-        ) -12px -12px,
-      radial-gradient(
-          12px at calc(100% - 12px) 12px,
-          transparent calc(100% - 2px),
-          black calc(100% - 2px) 100%,
-          transparent
-        )
-        12px -12px,
-      radial-gradient(
-          12px at calc(100% - 12px) calc(100% - 12px),
-          transparent calc(100% - 2px),
-          black calc(100% - 2px) 100%,
-          transparent
-        )
-        12px 12px,
-      radial-gradient(
-          12px at 12px calc(100% - 12px),
-          transparent calc(100% - 2px),
-          black calc(100% - 2px) 100%,
-          transparent
-        ) -12px 12px,
-      linear-gradient(90deg, black 2px, transparent 0) -1px 50% / 100% calc(
-          100% - 24px + 2px
-        ) repeat-x,
-      linear-gradient(black 2px, transparent 0) 50% -1px / calc(
-          100% - 24px + 2px
-        ) 100% repeat-y;
-  }
-
-  .fancy-border-white {
-    position: relative;
-  }
-  .fancy-border-white::before {
-    background: #ffffff;
-  }
 }
 
 html {
   overflow-x: hidden;
-  font-family: "Girl";
+  font-family: "Roubaix";
 }
 
 html::selection {
@@ -215,7 +146,7 @@ button:disabled {
   left: 0;
   width: 100%;
   height: 100vh;
-  background-image: url("/images/background-cat.png");
+  background-image: url("/images/cat-bg.png");
   background-size: cover;
   background-position: center;
   z-index: -1;
