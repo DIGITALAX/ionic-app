@@ -7,37 +7,16 @@ export const Error = ({ dict }: { dict: any }) => {
   if (!context?.errorData) return null;
 
   return (
-    <div className="fixed inset-0 bg-black/70 flex items-center justify-center z-50 p-4">
-      <div className="bg-white border border-black max-w-md w-full">
-        <div className="p-4">
-          <div className="flex items-center justify-between mb-4">
-            <div className="flex items-center gap-3">
-              <div className="w-6 h-6 bg-red-500 border border-black flex items-center justify-center">
-                <span className="text-white text-sm">✕</span>
+    <div className="fixed inset-0 bg-black/70 flex items-center justify-center z-50 p-4 cursor-pointer" onClick={context.hideError}>
+      <div className="relative w-full sm:w-fit h-fit flex items-center justify-center" onClick={(e) => e.stopPropagation()}>
+        <div className="relative w-80 h-96 flex font-rou cursor-default">
+          <div className="stamp-border">
+            <div className="stamp-content-wrapper overflow-y-scroll">
+              <div className="stamp-grid-background"></div>
+              <div className="stamp-content w-full flex flex-col text-black">
+                <p className="stamp-message">{context.errorData.message}</p>
               </div>
-              <h2 className="text-lg text-black">{dict?.modals?.error}</h2>
             </div>
-            <button
-              onClick={context.hideError}
-              className="text-black hover:text-gray-600 transition-colors text-xl"
-            >
-              ✕
-            </button>
-          </div>
-
-          <div className="mb-4">
-            <p className="text-black text-sm leading-relaxed whitespace-pre-wrap break-words">
-              {context.errorData.message}
-            </p>
-          </div>
-
-          <div className="flex justify-end">
-            <button
-              onClick={context.hideError}
-              className="px-4 py-2 bg-black hover:bg-gray-800 text-white border border-black transition-colors text-sm"
-            >
-              {dict?.modals?.close}
-            </button>
           </div>
         </div>
       </div>

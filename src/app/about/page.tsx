@@ -1,7 +1,7 @@
 import { Suspense } from "react";
 import { getDictionary } from "../[lang]/dictionaries";
 import Wrapper from "../components/Common/modules/Wrapper";
-import AboutEntry from "../components/About/modules/AboutEntry";
+import Notice from "../components/Common/modules/Notice";
 
 export default async function About() {
   const dict = await (getDictionary as (locale: any) => Promise<any>)("en");
@@ -10,7 +10,7 @@ export default async function About() {
       dict={dict}
       page={
         <Suspense fallback={<></>}>
-          <AboutEntry dict={dict} />
+          <Notice dict={dict} />
         </Suspense>
       }
     />

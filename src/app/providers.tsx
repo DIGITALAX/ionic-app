@@ -53,7 +53,7 @@ export const config = createConfig(
       .NEXT_PUBLIC_WALLET_CONNECT_PROJECT_ID as string,
     appUrl: "https://ionic.digitalax.xyz",
     appIcon: "https://ionic.digitalax.xyz/favicon.ico",
-    chains: [chains.testnet],
+    chains: [chains.mainnet],
     connectors: [],
     transports: {
       [currentNetwork.chainId]: http(),

@@ -81,9 +81,12 @@ export const MatterPhysicsContainer = () => {
 
     window.addEventListener("resetStickers", handleReset);
 
+    const MAX_BODIES = 5000;
     const rainInterval = setInterval(() => {
-      const randomX = Math.random() * width;
-      createFallingImage(randomX);
+      if (bodiesToRenderRef.current.length < MAX_BODIES) {
+        const randomX = Math.random() * width;
+        createFallingImage(randomX);
+      }
     }, 150);
 
     const renderLoop = setInterval(() => {

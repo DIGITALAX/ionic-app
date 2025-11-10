@@ -21,7 +21,10 @@
     "submitAppraisal": "ENVIAR VALORACIÓN",
     "appraisalSubmitted": "✓ ¡VALORACIÓN ENVIADA!",
     "submitAll10First": "ENVÍA PRIMERO LAS 10 VALORACIONES",
-    "addComment": "Añade tu comentario de valoración..."
+    "addComment": "Añade tu comentario de valoración...",
+    "mintIonic": "ACUÑAR IONIC",
+    "minting": "ACUÑANDO...",
+    "balance": "SALDO IONIC:"
   },
   "nft": {
     "loading": "Cargando NFT...",
@@ -353,6 +356,8 @@
     "paragraph4": "ese es el zeitgeist de ahora. los modelos de extracción se rompen, mientras te dejas dispersar y luchar por reemplazos decentes. si el modelo viejo está roto, ¿cómo sabes cuánto podría valer cualquier cosa nueva? construimos nuevos sistemas para evaluar medios en todas sus formas.",
     "paragraph5": "haz clic; podev3 es Ionic."
   },
+  "noMint": "¿Ya acuñaste PODE v1 o v2? Intenta con esa cartera. Si no, vuelve pronto para la próxima ronda de acuñación de Ionic.",
+  "mintSuccess": "¡Ionic acuñado! ¿Estás listo?",
   "modals": {
     "success": "ÉXITO",
     "error": "ERROR",

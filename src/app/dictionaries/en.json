@@ -21,7 +21,10 @@
     "submitAppraisal": "SUBMIT APPRAISAL",
     "appraisalSubmitted": "✓ APPRAISAL SUBMITTED!",
     "submitAll10First": "SUBMIT ALL 10 APPRAISALS FIRST",
-    "addComment": "Add your appraisal comment..."
+    "addComment": "Add your appraisal comment...",
+    "mintIonic": "MINT IONIC",
+    "minting": "MINTING...",
+    "balance": "IONIC BALANCE:"
   },
   "nft": {
     "loading": "Loading NFT...",
@@ -353,6 +356,8 @@
     "paragraph4": "that's the zeitgeist of now. the extraction models breaking, while you're left to scatter and scramble for decent replacements. if the old model's broken, how do you know what anything new might be worth? we build new systems to evaluate media in all of its forms.",
     "paragraph5": "click around; podev3 is Ionic."
   },
+  "noMint": "Did you mint PODE v1 or v2? Try with that wallet. If not, check back soon for the next round of Ionic minting.",
+  "mintSuccess": "Ionic minted! Are you ready?",
   "modals": {
     "success": "SUCCESS",
     "error": "ERROR",
