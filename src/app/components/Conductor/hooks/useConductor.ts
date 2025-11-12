@@ -1,7 +1,6 @@
 import { getConductorPage } from "@/app/lib/queries/subgraph/getConductors";
 import { useContext, useEffect, useState } from "react";
 import { Conductor, FloatingEmoji } from "../../Common/types/common.types";
-import { DUMMY_CONDUCTOR } from "@/app/lib/dummy";
 import {
   getCoreContractAddresses,
   getCurrentNetwork,
@@ -10,8 +9,9 @@ import { useAccount, usePublicClient, useWalletClient } from "wagmi";
 import { ABIS } from "@/abis";
 import { ReviewData } from "../types/conductor.types";
 import { ModalContext } from "@/app/providers";
+import { ensureMetadata, fetchMetadata } from "@/app/lib/utils";
 
-const useConductor = (conductorAddress: string | undefined, dict?: any) => {
+const useConductor = (conductorId: number | undefined, dict: any) => {
   const { address } = useAccount();
   const context = useContext(ModalContext);
   const publicClient = usePublicClient();
@@ -19,7 +19,6 @@ const useConductor = (conductorAddress: string | undefined, dict?: any) => {
   const [conductorLoading, setConductorLoading] = useState<boolean>(false);
   const [reviewLoading, setReviewLoading] = useState<boolean>(false);
   const [conductor, setConductor] = useState<Conductor | undefined>();
-  const [reviewSuccess, setReviewSuccess] = useState<boolean>(false);
   const [reviewData, setReviewData] = useState<ReviewData>({
     comment: "",
     reviewScore: 50,
@@ -171,12 +170,43 @@ const useConductor = (conductorAddress: string | undefined, dict?: any) => {
   };
 
   const getPageConductor = async () => {
-    if (!conductorAddress) return;
+    if (!conductorId || !publicClient) return;
     setConductorLoading(true);
     try {
-      const data = await getConductorPage(conductorAddress);
+      const data = await getConductorPage(conductorId);
+      let ensured = data?.data?.conductors?.[0];
+      if (ensured?.uri && !ensured?.metadata) {
+        ensured = await ensureMetadata(ensured);
+      }
+      const invitedDesigners = await Promise.all(
+        ensured?.invitedDesigners?.map(async (des: any) => {
+          if (des?.uri && !des?.metadata) {
+            des = await ensureMetadata(des);
+          }
+          return des;
+        })
+      );
 
-      setConductor(data?.data?.conductors?.[0] ?? DUMMY_CONDUCTOR);
+      const nfts = await fetchMetadata(
+        ensured?.appraisals?.map((ap: any) => ({
+          nftContract: ap?.nftContract,
+          nftId: ap?.nftId,
+          tokenType: ap?.tokenType,
+        })),
+        publicClient
+      );
+      setConductor({
+        ...ensured,
+        invitedDesigners,
+        appraisals: ensured?.appraisals?.map((ap: any) => ({
+          ...ap,
+          nft: nfts?.find(
+            (nft) =>
+              Number(nft?.nftId) == Number(ap?.nftId) &&
+              nft?.nftContract == ap?.nftContract
+          ),
+        })),
+      });
     } catch (err: any) {
       console.error(err.message);
     }
@@ -220,17 +250,19 @@ const useConductor = (conductorAddress: string | undefined, dict?: any) => {
         account: address,
       });
       await publicClient.waitForTransactionReceipt({ hash });
-      
-      setReviewSuccess(true);
-      context?.showSuccess(
-        dict?.modals?.conductor?.reviewSubmitted,
-        hash
-      );
+
+      context?.showSuccess(dict?.modals?.conductor?.reviewSubmitted, hash);
+      setReviewData({
+        comment: "",
+        reviewScore: 50,
+        reactions: [],
+        conductorId: Number(conductor?.conductorId) || 0,
+        reactionUsage: [],
+      });
+      setShowEmojiPanel(false);
     } catch (err: any) {
       console.error(err.message);
-      context?.showError(
-        dict?.modals?.conductor?.reviewError
-      );
+      context?.showError(dict?.modals?.conductor?.reviewError);
     }
     setReviewLoading(false);
   };
@@ -245,25 +277,16 @@ const useConductor = (conductorAddress: string | undefined, dict?: any) => {
   };
 
   useEffect(() => {
-    if (conductorAddress) {
+    if (conductorId && publicClient) {
       getPageConductor();
     }
-  }, [conductorAddress]);
-
-  useEffect(() => {
-    if (reviewSuccess) {
-      setTimeout(() => {
-        setReviewSuccess(false);
-      }, 3000);
-    }
-  }, [reviewSuccess]);
+  }, [conductorId, publicClient]);
 
   return {
     conductorLoading,
     conductor,
     handleReview,
     reviewLoading,
-    reviewSuccess,
     reviewData,
     setReviewData,
     floatingEmojis,

@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import { Purchase } from "../../Common/types/common.types";
 import { useAccount, usePublicClient } from "wagmi";
 import { getPurchases } from "@/app/lib/queries/subgraph/getPurchases";
-import { DUMMY_PURCHASES } from "@/app/lib/dummy";
 
 const usePurchases = () => {
   const { address } = useAccount();
@@ -20,10 +19,7 @@ const usePurchases = () => {
     try {
       const limit = 20;
       const data = await getPurchases(address, limit, skip);
-      const newPurchases =
-        data?.data?.purchases?.length < 1
-          ? DUMMY_PURCHASES
-          : data?.data?.purchases;
+      const newPurchases = data?.data?.purchases;
 
       if (reset) {
         setPurchases(newPurchases);

@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Designer } from "../../Common/types/common.types";
-import { DUMMY_DESIGNER } from "@/app/lib/dummy";
 import { getDesigner } from "@/app/lib/queries/subgraph/getDesigners";
+import { ensureMetadata } from "@/app/lib/utils";
 
 const useDesigner = (designerAddress: string | undefined) => {
   const [designerLoading, setDesignerLoading] = useState<boolean>(false);
@@ -12,8 +12,11 @@ const useDesigner = (designerAddress: string | undefined) => {
     setDesignerLoading(true);
     try {
       const data = await getDesigner(designerAddress);
-
-      setDesigner(data?.data?.designers?.[0] ?? DUMMY_DESIGNER);
+      const ensured = await ensureMetadata(data?.data?.designers?.[0]);
+      setDesigner({
+        ...ensured,
+        invitedBy: await ensureMetadata(ensured?.invitedBy),
+      });
     } catch (err: any) {
       console.error(err.message);
     }

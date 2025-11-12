@@ -1,11 +1,9 @@
 import { gql } from "@apollo/client";
 import { graphClient } from "../client";
 
-
 const CONDUCTOR = `
-query($wallet: String!) {
-  conductors(where: {wallet: $wallet}) {
-        wallet
+query($conductorId: Int!) {
+  conductors(where: {conductorId: $conductorId}) {
         conductorId
         uri
         metadata {
@@ -27,6 +25,7 @@ query($wallet: String!) {
         invitedDesigners {
           wallet
           uri
+          designerId
           metadata {
             title
             image
@@ -36,13 +35,11 @@ query($wallet: String!) {
 }
 `;
 
-export const getConductor = async (
-  wallet: string
-): Promise<any> => {
+export const getConductor = async (conductorId: number): Promise<any> => {
   const queryPromise = graphClient.query({
     query: gql(CONDUCTOR),
     variables: {
-      wallet
+      conductorId,
     },
     fetchPolicy: "no-cache",
     errorPolicy: "all",
@@ -61,17 +58,15 @@ export const getConductor = async (
   }
 };
 
+export const getTokenReactions = async (tokenIds: number[]): Promise<any> => {
+  const orConditions = tokenIds.map((id) => `{tokenId: ${id}}`).join(", ");
 
-export const getTokenReactions = async (
-  tokenIds: number[]
-): Promise<any> => {
-  const orConditions = tokenIds.map(id => ({ tokenId: id.toString() }));
-  
   const queryPromise = graphClient.query({
     query: gql(`
 query {
-  reactions(where: {or: ${orConditions}}) {
-        reactionId
+  tokenReactions(where: {or: [${orConditions}]}) {
+        reaction {
+          reactionId
         packId
         reactionUri
         tokenIds
@@ -79,6 +74,7 @@ query {
           title
           description
           image
+        }
         }
   }
 }
@@ -100,13 +96,9 @@ query {
   }
 };
 
-
-
-
 const CONDUCTOR_PAGE = `
-query($wallet: String!) {
-  conductors(where: {wallet: $wallet}) {
-        wallet
+query($conductorId: Int!) {
+  conductors(where: {conductorId: $conductorId}) {
         conductorId
         uri
         metadata {
@@ -128,6 +120,7 @@ query($wallet: String!) {
         invitedDesigners {
           wallet
           uri
+          designerId
           metadata {
             title
             image
@@ -141,6 +134,7 @@ query($wallet: String!) {
           blockTimestamp
           transactionHash
           uri
+          tokenType
           metadata {
             comment
             reactions {
@@ -197,13 +191,11 @@ query($wallet: String!) {
 }
 `;
 
-export const getConductorPage = async (
-  wallet: string
-): Promise<any> => {
+export const getConductorPage = async (conductorId: number): Promise<any> => {
   const queryPromise = graphClient.query({
     query: gql(CONDUCTOR_PAGE),
     variables: {
-      wallet
+      conductorId,
     },
     fetchPolicy: "no-cache",
     errorPolicy: "all",

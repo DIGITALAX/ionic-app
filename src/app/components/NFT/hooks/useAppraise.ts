@@ -11,14 +11,13 @@ import { ABIS } from "@/abis";
 const useAppraise = (
   nftContract: string | undefined,
   nftId: number | undefined,
-  dict?: any
+  dict: any
 ) => {
   const { address } = useAccount();
   const context = useContext(ModalContext);
   const publicClient = usePublicClient();
   const { data: walletClient } = useWalletClient();
   const [appraisalLoading, setAppraisalLoading] = useState<boolean>(false);
-  const [appraisalSuccess, setAppraisalSuccess] = useState<boolean>(false);
   const [appraisalData, setAppraisalData] = useState<AppraisalData>({
     overallScore: 50,
     comment: "",
@@ -175,10 +174,10 @@ const useAppraise = (
       !walletClient ||
       !publicClient ||
       !address ||
-      !context?.conductor ||
+      Number(context?.conductor?.conductorId) < 1 ||
       !appraisalData?.comment ||
       appraisalData.reactions.length === 0 ||
-      !context?.verified ||
+      Number(context?.verified?.minted) < 1 ||
       !nftContract ||
       !nftId
     )
@@ -204,6 +203,7 @@ const useAppraise = (
         abi: ABIS.IonicAppraisals,
         functionName: "createAppraisal",
         args: [
+          appraisalData?.nftContract,
           Number(appraisalData?.nftId),
           Number(context?.conductor?.conductorId),
           appraisalData.overallScore,
@@ -215,7 +215,7 @@ const useAppraise = (
 
       await publicClient.waitForTransactionReceipt({ hash });
 
-      setAppraisalSuccess(true);
+      setShowEmojiPanel(false);
       setAppraisalData({
         overallScore: 50,
         comment: "",
@@ -224,16 +224,11 @@ const useAppraise = (
         nftId,
         nftContract,
       });
-      
-      context?.showSuccess(
-        dict?.modals?.entry?.appraisalSubmitted,
-        hash
-      );
+
+      context?.showSuccess(dict?.modals?.entry?.appraisalSubmitted, hash);
     } catch (err: any) {
       console.error(err.message);
-      context?.showError(
-        dict?.modals?.entry?.appraisalError
-      );
+      context?.showError(dict?.modals?.entry?.appraisalError);
     }
     setAppraisalLoading(false);
   };
@@ -247,19 +242,10 @@ const useAppraise = (
     );
   };
 
-  useEffect(() => {
-    if (appraisalSuccess) {
-      setTimeout(() => {
-        setAppraisalSuccess(false);
-      }, 3000);
-    }
-  }, [appraisalSuccess]);
-
   return {
     handleAppraisal,
     appraisalData,
     setAppraisalData,
-    appraisalSuccess,
     appraisalLoading,
     floatingEmojis,
     showEmojiPanel,

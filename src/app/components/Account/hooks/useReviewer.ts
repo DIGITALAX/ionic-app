@@ -5,15 +5,16 @@ import { Review } from "../../Common/types/common.types";
 import {
   getCoreContractAddresses,
   getCurrentNetwork,
+  INFURA_GATEWAY,
 } from "@/app/lib/constants";
 import { ABIS } from "@/abis";
 import {
   getReviewer,
   getReviewerReviews,
 } from "@/app/lib/queries/subgraph/getReviewers";
-import { DUMMY_REVIEWS } from "@/app/lib/dummy";
+import { ensureMetadata } from "@/app/lib/utils";
 
-const useReviewer = (dict?: any) => {
+const useReviewer = (dict: any) => {
   const { address } = useAccount();
   const context = useContext(ModalContext);
   const publicClient = usePublicClient();
@@ -23,9 +24,14 @@ const useReviewer = (dict?: any) => {
   const [reviewsLoading, setReviewsLoading] = useState<boolean>(false);
   const [updateLoading, setUpdateLoading] = useState<boolean>(false);
   const [hasMoreReviews, setHasMoreReviews] = useState<boolean>(true);
+  const [imagePreview, setImagePreview] = useState<string>("");
   const network = getCurrentNetwork();
   const contracts = getCoreContractAddresses(network.chainId);
-  const [form, setForm] = useState<{title: string; description: string ; image: string | File}>(
+  const [form, setForm] = useState<{
+    title: string;
+    description: string;
+    image: string | File;
+  }>(
     context?.reviewer?.metadata || {
       title: "",
       description: "",
@@ -66,7 +72,8 @@ const useReviewer = (dict?: any) => {
     setReviewerLoading(true);
     try {
       const data = await getReviewer(address);
-      context?.setReviewer(data?.data?.reviewers?.[0]);
+      const ensured = await ensureMetadata(data?.data?.reviewers?.[0]);
+      context?.setReviewer(ensured);
     } catch (err: any) {
       console.error(err.message);
     }
@@ -77,7 +84,6 @@ const useReviewer = (dict?: any) => {
     if (
       !address ||
       !publicClient ||
-      !context?.reviewer ||
       form.title.trim() == "" ||
       form.description.trim() == "" ||
       !walletClient
@@ -132,26 +138,49 @@ const useReviewer = (dict?: any) => {
           description: form.description,
         },
       }));
-      
-      context?.showSuccess(
-        dict?.modals?.reviewer?.profileUpdated,
-        hash
-      );
+
+      context?.showSuccess(dict?.modals?.reviewer?.profileUpdated, hash);
     } catch (err: any) {
       console.error(err.message);
-      context?.showError(
-        dict?.modals?.reviewer?.updateError
-      );
+      context?.showError(dict?.modals?.reviewer?.updateError);
     }
 
     setUpdateLoading(false);
   };
 
   useEffect(() => {
+    if (form.image && typeof form.image !== "string") {
+      const preview = URL.createObjectURL(form.image as Blob);
+      setImagePreview(preview);
+      return () => URL.revokeObjectURL(preview);
+    } else if (!form.image.includes("ipfs://")) {
+      setImagePreview("");
+    }
+  }, [form.image]);
+
+  useEffect(() => {
+    if (context?.reviewer) {
+      setForm({
+        title: context?.reviewer?.metadata?.title ?? "",
+        description: context?.reviewer?.metadata?.description ?? "",
+        image: context?.reviewer?.metadata?.image ?? "",
+      });
+      if (
+        context?.reviewer?.metadata?.image &&
+        context?.reviewer?.metadata?.image !== ""
+      ) {
+        setImagePreview(
+          `${INFURA_GATEWAY}/ipfs/${
+            context?.reviewer?.metadata?.image?.split("ipfs://")?.[1]
+          }`
+        );
+      }
+    }
+  }, [context?.reviewer]);
+
+  useEffect(() => {
     if (address && reviews.length < 1) {
       handleAllReviews(0, true);
-    } else if (reviews.length < 1) {
-      setReviews(DUMMY_REVIEWS);
     }
 
     if (address && !context?.reviewer) {
@@ -169,6 +198,8 @@ const useReviewer = (dict?: any) => {
     reviewsLoading,
     hasMoreReviews,
     loadMoreReviews,
+    imagePreview,
+    setImagePreview,
   };
 };
 

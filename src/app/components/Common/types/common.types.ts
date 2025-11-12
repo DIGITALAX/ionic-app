@@ -17,15 +17,12 @@ export interface FallingImageBody {
   id: string;
 }
 
-
-
 export interface FallingImage {
   id: string;
   x: number;
   y: number;
   imageIndex: number;
 }
-
 
 export interface NFT {
   id: string;
@@ -37,7 +34,7 @@ export interface NFT {
   blockNumber: string;
   blockTimestamp: string;
   transactionHash: string;
-  active: string;
+  active: boolean;
   appraisalCount: string;
   totalScore: string;
   averageScore: string;
@@ -57,7 +54,6 @@ export interface NFTMetadata {
 
 export interface Conductor {
   id: string;
-  wallet: string;
   conductorId: string;
   uri: string;
   blockNumber: string;
@@ -81,8 +77,8 @@ export interface Designer {
   wallet: string;
   uri: string;
   metadata: BaseMetadata;
-  invitedBy: string;
-  active: string;
+  invitedBy: Conductor;
+  active: boolean;
   designerId: string;
   inviteTimestamp: string;
   packCount: string;
@@ -134,7 +130,7 @@ export interface ReactionPack {
   basePrice: string;
   priceIncrement: string;
   conductorReservedSpots: string;
-  active: string;
+  active: boolean;
   packUri: string;
   packMetadata: BaseMetadata;
   reactions: Reaction[];
@@ -159,6 +155,8 @@ export interface Reviewer {
   reviews: Review[];
   uri: string;
   metadata: BaseMetadata;
+  blockTimestamp: string;
+  transactionHash: string;
   reviewCount: string;
   totalScore: string;
   averageScore: string;
@@ -199,6 +197,7 @@ export interface Appraisal {
   blockTimestamp: string;
   transactionHash: string;
   uri: string;
+  nft?: NFT;
   reactions: { count: number; reactionId: string; reaction: Reaction }[];
   metadata: Metadata;
   conductor: Conductor;

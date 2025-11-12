@@ -1,36 +1,18 @@
 "use client";
 
 import Image from "next/image";
-import { FunctionComponent, JSX, useCallback } from "react";
+import { FunctionComponent, JSX, useContext } from "react";
 import useMint from "../hooks/useMint";
 import { useAccount } from "wagmi";
+import { ModalContext } from "@/app/providers";
 
 const Notice: FunctionComponent<{ dict: any }> = ({ dict }): JSX.Element => {
-  const handleReset = useCallback(() => {
-    window.dispatchEvent(new CustomEvent("resetStickers"));
-  }, []);
   const { address } = useAccount();
-  const { mintLoading, handleMint, minted } = useMint(dict);
+  const context = useContext(ModalContext);
+  const { mintLoading, handleMint } = useMint(dict);
 
   return (
     <div className="relative w-full h-full flex-col gap-2 flex items-center justify-center">
-      <div className="relative w-fit h-fit flex">
-        <div
-          className="relative cursor-pointer bg-white/80 p-1 border border-black hover:opacity-90 w-8 h-8 flex rounded-full"
-          onClick={handleReset}
-        >
-          <div className="relative w-full h-full flex">
-            <Image
-              layout="fill"
-              className="rounded-full"
-              objectFit="contain"
-              src={"/images/reset.png"}
-              draggable={false}
-              alt="Reset"
-            />
-          </div>
-        </div>
-      </div>
       <div className="relative w-full sm:w-fit h-fit flex items-center justify-center">
         <div className="relative w-80 h-96 flex">
           <div className="stamp-border">
@@ -43,11 +25,17 @@ const Notice: FunctionComponent<{ dict: any }> = ({ dict }): JSX.Element => {
 
                 <button
                   onClick={handleMint}
-                  disabled={mintLoading || !address || minted > 0}
+                  disabled={
+                    mintLoading ||
+                    !address ||
+                    Number(context?.verified?.minted) > 0
+                  }
                   className="relative w-full mt-4 py-2 px-4 bg-black disabled:bg-gray-400 text-white rounded transition-all cursor-pointer"
                 >
-                  {minted > 0
-                    ? `${dict?.entry.balance} ${minted}`
+                  {Number(context?.verified?.minted) > 0
+                    ? `${dict?.entry.balance} ${Number(
+                        context?.verified?.minted
+                      )}`
                     : mintLoading
                     ? `${dict?.entry.minting}`
                     : `${dict?.entry.mintIonic}`}

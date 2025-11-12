@@ -33,19 +33,19 @@ export const getCurrentNetwork = (): NetworkConfig => {
 
 export const CORE_CONTRACT_ADDRESSES: Record<number, CoreContractAddresses> = {
   [NETWORKS.LENS_TESTNET.chainId]: {
-    appraisals: "0x",
-    designers: "0x",
-    conductors: "0x",
-    reactionPacks: "0x",
-    ionic: "0x",
-    mona: "0x3D7f4Fc4E17Ead2ABBcf282A38F209D683e03835",
+    appraisals: "0xd83Ce31575E465694bdcb8E3688B189a39f34eA7",
+    designers: "0xb87C571737536F8A4F26da0ce6518ecfE9e92C6f",
+    conductors: "0xC6CcCebF8c151f253d5AdCDE5bd3F09d4a75caaD",
+    reactionPacks: "0x553bad5BeD228A5B96153Dd397DcE9e6F76B45C4",
+    ionic: "0xb8CfdBEF2721C51d8cC76Cd0FaA6B9799bF05123",
+    mona: "0x18921123f3457AD3c974f2edfCb1053FB29450AC",
   },
   [NETWORKS.LENS_MAINNET.chainId]: {
-    appraisals: "0x",
-    designers: "0x",
-    conductors: "0x",
-    reactionPacks: "0x",
-    ionic: "0x8E2318511fFCc846EA646902a8cb8326F4d07E56",
+    appraisals: "0x99a5E4AF49D13bfa45341D1a120A86a071a0D2ED",
+    designers: "0x7867d89afc4197c4108AC658f29DdE31693c2873",
+    conductors: "0x3DA267952b20b6a9953093b80b76d70ceF0C6A18",
+    reactionPacks: "0xb33AF8B96aE53bE1B890faD0AA6e06A435e03c13",
+    ionic: "0x160694488154F67c70208cBA1fa3dDb8B7FF8738",
     mona: "0x28547B5b6B405A1444A17694AC84aa2d6A03b3Bd",
   },
 };

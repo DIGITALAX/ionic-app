@@ -1,33 +1,23 @@
 import { useEffect, useState } from "react";
 import { NFT } from "../../Common/types/common.types";
 import { getOneNFT } from "@/app/lib/queries/subgraph/getNFTs";
-import { DUMMY_NFTS, DUMMY_APPRAISALS, DUMMY_CONDUCTOR } from "@/app/lib/dummy";
+import { fetchMetadata } from "@/app/lib/utils";
+import { usePublicClient } from "wagmi";
 
 const useNFT = (nftContract: string | undefined, nftId: number | undefined) => {
+  const publicClient = usePublicClient();
   const [nft, setNFT] = useState<NFT | undefined>();
   const [nftLoading, setNftLoading] = useState<boolean>(false);
 
   const getNFT = async () => {
-    if (!nftContract || !nftId) return;
+    if (!nftContract || !nftId || !publicClient) return;
     setNftLoading(true);
     try {
       const data = await getOneNFT(nftContract, nftId);
-      let nftData = data?.data?.nfts?.[0];
-      
-      if (!nftData) {
-        const dummyNft = DUMMY_NFTS[0];
-        if (dummyNft) {
-          nftData = {
-            ...dummyNft,
-            appraisals: DUMMY_APPRAISALS.map(a => ({
-              ...a,
-              conductor: DUMMY_CONDUCTOR
-            }))
-          };
-        }
-      }
-      
-      setNFT(nftData);
+      let nftData = data?.data?.nfts;
+
+      nftData = await fetchMetadata(nftData, publicClient);
+      setNFT(nftData?.[0]);
     } catch (err: any) {
       console.error(err.message);
     }
@@ -35,10 +25,10 @@ const useNFT = (nftContract: string | undefined, nftId: number | undefined) => {
   };
 
   useEffect(() => {
-    if (nftId && nftContract) {
+    if (nftId && nftContract && publicClient) {
       getNFT();
     }
-  }, [nftId, nftContract]);
+  }, [nftId, nftContract, publicClient]);
 
   return {
     nftLoading,

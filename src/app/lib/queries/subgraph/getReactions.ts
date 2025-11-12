@@ -21,7 +21,6 @@ query($first: Int!, $skip: Int!) {
     packMetadata {
       title
       image
-      description
     }
     reactions {
         reactionId

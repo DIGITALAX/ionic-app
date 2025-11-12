@@ -16,10 +16,9 @@ import {
   getAllNFTs,
   getNotAppraisedNFTs,
 } from "@/app/lib/queries/subgraph/getNFTs";
-import { DUMMY_NFTS } from "@/app/lib/dummy";
 import { fetchNFTMetadata } from "@/app/lib/helpers/metadata";
 
-const useEntry = (dict?: any) => {
+const useEntry = (dict: any) => {
   const { address } = useAccount();
   const context = useContext(ModalContext);
   const publicClient = usePublicClient();
@@ -48,17 +47,19 @@ const useEntry = (dict?: any) => {
       const limit = 20;
       let newNfts: NFT[] = [];
 
-      if (address) {
-        const data = await getNotAppraisedNFTs(address, limit, skip);
+      if (Number(context?.conductor?.conductorId) > 0) {
+        const data = await getNotAppraisedNFTs(
+          Number(context?.conductor?.conductorId),
+          limit,
+          skip
+        );
         newNfts = data?.data?.conductors?.[0]?.notAppraised || [];
       } else {
         const data = await getAllNFTs(limit, skip);
         newNfts = data?.data?.nfts || [];
       }
 
-      if (newNfts.length < 1) {
-        newNfts = DUMMY_NFTS;
-      } else if (publicClient) {
+      if (publicClient) {
         const nftsWithMetadata = await Promise.all(
           newNfts.map(async (nft) => {
             try {
@@ -391,10 +392,10 @@ const useEntry = (dict?: any) => {
       !walletClient ||
       !publicClient ||
       !address ||
-      !context?.conductor ||
+      Number(context?.conductor?.conductorId) < 1 ||
       !currentAppraisal?.comment ||
       currentAppraisal.reactions.length === 0 ||
-      !context?.verified
+      Number(context?.verified?.minted) < 1
     )
       return;
 
@@ -418,6 +419,7 @@ const useEntry = (dict?: any) => {
         abi: ABIS.IonicAppraisals,
         functionName: "createAppraisal",
         args: [
+          currentAppraisal?.nftContract,
           Number(currentAppraisal?.nftId),
           Number(context?.conductor?.conductorId),
           currentAppraisal.overallScore,
@@ -434,16 +436,11 @@ const useEntry = (dict?: any) => {
         let arr = [...prev];
         return arr.filter((arr) => arr.nftId !== currentAppraisal.nftId);
       });
-      
-      context?.showSuccess(
-        dict?.modals?.entry?.appraisalSubmitted,
-        hash
-      );
+
+      context?.showSuccess(dict?.modals?.entry?.appraisalSubmitted, hash);
     } catch (err: any) {
       console.error(err.message);
-      context?.showError(
-        dict?.modals?.entry?.appraisalError
-      );
+      context?.showError(dict?.modals?.entry?.appraisalError);
     }
     setAppraisalLoading(false);
   };
@@ -453,10 +450,10 @@ const useEntry = (dict?: any) => {
       !walletClient ||
       !publicClient ||
       !address ||
-      !context?.conductor ||
+      Number(context?.conductor?.conductorId) < 1 ||
       !appraisalData.every((ap) => ap.comment) ||
       !appraisalData.every((ap) => ap.reactions.length > 0) ||
-      !context?.verified
+      Number(context?.verified?.minted) < 1
     )
       return;
 
@@ -511,16 +508,11 @@ const useEntry = (dict?: any) => {
 
       setAppraisalSuccess(true);
       setAppraisalData([]);
-      
-      context?.showSuccess(
-        dict?.modals?.entry?.batchAppraisalsSubmitted,
-        hash
-      );
+
+      context?.showSuccess(dict?.modals?.entry?.batchAppraisalsSubmitted, hash);
     } catch (err: any) {
       console.error(err.message);
-      context?.showError(
-        dict?.modals?.entry?.batchAppraisalsError
-      );
+      context?.showError(dict?.modals?.entry?.batchAppraisalsError);
     }
     setAppraisalLoading(false);
   };
@@ -538,7 +530,7 @@ const useEntry = (dict?: any) => {
     if (nfts.length < 1 && !nftsLoading) {
       getNfts(true);
     }
-  }, [address]);
+  }, [context?.conductor?.conductorId, address]);
 
   useEffect(() => {
     if (appraisalSuccess) {

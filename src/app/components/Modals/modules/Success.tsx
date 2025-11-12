@@ -8,14 +8,14 @@ export const Success = ({ dict }: { dict: any }) => {
   if (!context?.successData) return null;
 
   const network = getCurrentNetwork();
-  const explorerUrl = context.successData.txHash
-    ? `${network.blockExplorer}/tx/${context.successData.txHash}`
+  const explorerUrl = context?.successData?.txHash
+    ? `${network.blockExplorer}/tx/${context?.successData.txHash}`
     : null;
 
   return (
     <div
       className="fixed inset-0 bg-black/70 flex items-center justify-center z-50 p-4 cursor-pointer"
-      onClick={context.hideSuccess}
+      onClick={context?.hideSuccess}
     >
       <div
         className="relative w-full sm:w-fit h-fit flex items-center justify-center"
@@ -26,11 +26,13 @@ export const Success = ({ dict }: { dict: any }) => {
             <div className="stamp-content-wrapper overflow-y-scroll">
               <div className="stamp-grid-background"></div>
               <div className="stamp-content w-full flex flex-col text-black">
-                <p className="stamp-message">{context.successData.message}</p>
+                <p className="text-xs text-gray-700 leading-relaxed whitespace-pre-wrap break-words my-2">
+                  {context?.successData?.message}
+                </p>
 
-                {context.successData.txHash && (
-                  <div className="stamp-tx">
-                    <p className="stamp-tx-label">
+                {context?.successData?.txHash && (
+                  <div className="w-full p-2 my-2">
+                    <p className="text-xxs text-gray-600 mb-1">
                       {dict?.modals?.transactionHash}:
                     </p>
                     {explorerUrl ? (
@@ -38,13 +40,13 @@ export const Success = ({ dict }: { dict: any }) => {
                         href={explorerUrl}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="stamp-tx-link"
+                        className="text-xxs text-blue-600 hover:text-blue-800 hover:underline break-all"
                       >
-                        {context.successData.txHash}
+                        {context?.successData?.txHash}
                       </a>
                     ) : (
-                      <p className="stamp-tx-link">
-                        {context.successData.txHash}
+                      <p className="text-xxs text-blue-600 break-all">
+                        {context?.successData?.txHash}
                       </p>
                     )}
                   </div>

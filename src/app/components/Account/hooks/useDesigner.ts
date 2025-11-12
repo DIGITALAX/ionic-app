@@ -1,19 +1,20 @@
 import { ModalContext } from "@/app/providers";
 import { useContext, useEffect, useState } from "react";
 import { useAccount, usePublicClient, useWalletClient } from "wagmi";
-import { BaseMetadata, ReactionPack } from "../../Common/types/common.types";
+import { ReactionPack } from "../../Common/types/common.types";
 import {
   getCoreContractAddresses,
   getCurrentNetwork,
+  INFURA_GATEWAY,
 } from "@/app/lib/constants";
 import { ABIS } from "@/abis";
 import {
   getDesigner,
   getDesignerPacks,
 } from "@/app/lib/queries/subgraph/getDesigners";
-import { DUMMY_PACKS } from "@/app/lib/dummy";
+import { ensureMetadata, fetchMetadataFromIPFS } from "@/app/lib/utils";
 
-const useDesigner = (dict?: any) => {
+const useDesigner = (dict: any) => {
   const { address } = useAccount();
   const context = useContext(ModalContext);
   const publicClient = usePublicClient();
@@ -26,6 +27,7 @@ const useDesigner = (dict?: any) => {
   const network = getCurrentNetwork();
   const contracts = getCoreContractAddresses(network.chainId);
   const [createLoading, setCreateLoading] = useState<boolean>(false);
+  const [imagePreview, setImagePreview] = useState<string>("");
   const [createPackData, setCreatePackData] = useState<{
     maxEditions: number;
     conductorReservedSpots: number;
@@ -70,8 +72,17 @@ const useDesigner = (dict?: any) => {
     try {
       const limit = 20;
       const data = await getDesignerPacks(address, limit, skip);
-      const newPacks = data?.data?.reactionPacks || [];
+      let newPacks = data?.data?.reactionPacks || [];
+      newPacks = await Promise.all(
+        data?.data?.reactionPacks?.map(async (pack: any) => {
+          if (pack?.packUri && !pack?.packMetadata) {
+            const ipfsMetadata = await fetchMetadataFromIPFS(pack?.packUri);
+            pack.packMetadata = ipfsMetadata;
+          }
 
+          return pack;
+        })
+      );
       if (reset) {
         setPacks(newPacks);
       } else {
@@ -96,7 +107,8 @@ const useDesigner = (dict?: any) => {
     setDesignerLoading(true);
     try {
       const data = await getDesigner(address);
-      context?.setDesigner(data?.data?.designers?.[0]);
+      const ensured = await ensureMetadata(data?.data?.designers?.[0]);
+      context?.setDesigner(ensured);
     } catch (err: any) {
       console.error(err.message);
     }
@@ -161,16 +173,11 @@ const useDesigner = (dict?: any) => {
           description: form.description,
         },
       }));
-      
-      context?.showSuccess(
-        dict?.modals?.designer?.profileUpdated,
-        hash
-      );
+
+      context?.showSuccess(dict?.modals?.designer?.profileUpdated, hash);
     } catch (err: any) {
       console.error(err.message);
-      context?.showError(
-        dict?.modals?.designer?.updateError
-      );
+      context?.showError(dict?.modals?.designer?.updateError);
     }
 
     setUpdateLoading(false);
@@ -275,18 +282,46 @@ const useDesigner = (dict?: any) => {
         reactions: [],
       });
       await handleAllPacks();
-      
-      context?.showSuccess(
-        dict?.modals?.designer?.reactionPackCreated,
-        hash
-      );
+
+      context?.showSuccess(dict?.modals?.designer?.reactionPackCreated, hash);
     } catch (err: any) {
       console.error(err.message);
-      context?.showError(
-        dict?.modals?.designer?.createPackError
-      );
+      context?.showError(dict?.modals?.designer?.createPackError);
     }
     setCreateLoading(false);
+  };
+
+  useEffect(() => {
+    if (context?.designer?.metadata) {
+      setForm({
+        title: context?.designer?.metadata?.title ?? "",
+        description: context?.designer?.metadata?.description ?? "",
+        image: context?.designer?.metadata?.image ?? "",
+      });
+      if (context?.designer?.metadata?.image) {
+        setImagePreview(
+          formatPreview(context?.designer?.metadata?.image as string)
+        );
+      }
+    }
+  }, [context?.designer]);
+
+  useEffect(() => {
+    if (form.image && typeof form.image !== "string") {
+      const preview = URL.createObjectURL(form.image as Blob);
+      setImagePreview(preview);
+      return () => URL.revokeObjectURL(preview);
+    } else if (typeof form.image === "string" && form.image !== "") {
+      setImagePreview(formatPreview(form.image));
+    } else {
+      setImagePreview("");
+    }
+  }, [form.image]);
+
+  const formatPreview = (image: string) => {
+    return image.includes("ipfs://")
+      ? `${INFURA_GATEWAY}/ipfs/${image.split("ipfs://")?.[1]}`
+      : image;
   };
 
   useEffect(() => {
@@ -298,12 +333,6 @@ const useDesigner = (dict?: any) => {
       handleDesigner();
     }
   }, [address]);
-
-  useEffect(() => {
-    if (packs.length < 1) {
-      setPacks(DUMMY_PACKS);
-    }
-  }, []);
 
   return {
     designerLoading,
@@ -319,6 +348,7 @@ const useDesigner = (dict?: any) => {
     createLoading,
     createPackData,
     setCreatePackData,
+    imagePreview,
   };
 };
 

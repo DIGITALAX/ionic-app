@@ -5,7 +5,14 @@ const DESIGNER = `
 query($wallet: String!) {
   designers(where: { wallet: $wallet }) {
     wallet
-    invitedBy
+    invitedBy {
+      conductorId
+      uri
+      metadata {
+        title
+        image
+      }
+    }
     active
     designerId
     inviteTimestamp
@@ -26,6 +33,11 @@ query($wallet: String!) {
         conductorReservedSpots
         active
         packUri
+        packMetadata {
+          title
+          description
+          image
+        }
         reactions {
             reactionId
             reactionUri
@@ -79,7 +91,7 @@ export const getDesigner = async (wallet: string): Promise<any> => {
 
 const DESIGNER_PACKS = `
 query($designer: String!, $first: Int!, $skip: Int!) {
-  reactionPacks(where: { designer: $designer }, $first: Int!, $skip: Int!) {
+  reactionPacks(where: { designer: $designer }, first: $first, skip: $skip) {
       packId
       currentPrice
       maxEditions
@@ -92,6 +104,7 @@ query($designer: String!, $first: Int!, $skip: Int!) {
       packMetadata {
         image
         title
+        description
       }
   }
 }

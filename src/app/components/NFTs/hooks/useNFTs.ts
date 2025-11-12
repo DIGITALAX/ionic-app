@@ -1,7 +1,6 @@
 import { useContext, useEffect, useState } from "react";
 import { NFT } from "../../Common/types/common.types";
 import { getAllNFTs } from "@/app/lib/queries/subgraph/getNFTs";
-import { DUMMY_NFTS } from "@/app/lib/dummy";
 import { useAccount, usePublicClient, useWalletClient } from "wagmi";
 import { TokenType } from "../types/nfts.types";
 import {
@@ -10,14 +9,18 @@ import {
 } from "@/app/lib/constants";
 import { ABIS } from "@/abis";
 import { ModalContext } from "@/app/providers";
+import { fetchMetadata } from "@/app/lib/utils";
 
-const useNFTs = (dict?: any) => {
+const useNFTs = (dict: any) => {
   const { address } = useAccount();
   const context = useContext(ModalContext);
   const publicClient = usePublicClient();
   const { data: walletClient } = useWalletClient();
   const [nftsLoading, setNftsLoading] = useState<boolean>(false);
   const [nfts, setNfts] = useState<NFT[]>([]);
+  const [showSubmitForm, setShowSubmitForm] = useState<boolean>(false);
+  const [showTokenTypeDropdown, setShowTokenTypeDropdown] =
+    useState<boolean>(false);
   const [hasMoreNfts, setHasMoreNfts] = useState<boolean>(true);
   const [submitLoading, setSubmitLoading] = useState<boolean>(false);
   const [formData, setFormData] = useState<{
@@ -27,7 +30,7 @@ const useNFTs = (dict?: any) => {
   }>({
     tokenId: 0,
     tokenAddress: "0x",
-    tokenType: TokenType.ERC721
+    tokenType: TokenType.ERC721,
   });
   const network = getCurrentNetwork();
   const contracts = getCoreContractAddresses(network.chainId);
@@ -41,37 +44,40 @@ const useNFTs = (dict?: any) => {
         address: contracts.appraisals,
         abi: ABIS.IonicAppraisals,
         functionName: "submitNFT",
-        args: [Object.values(formData)],
+        args: [
+          BigInt(formData.tokenId),
+          formData.tokenAddress,
+          formData.tokenType,
+        ],
         account: address,
       });
       await publicClient.waitForTransactionReceipt({ hash });
-      
+
       setFormData({
         tokenId: 0,
         tokenAddress: "0x",
-        tokenType: TokenType.ERC721
+        tokenType: TokenType.ERC721,
       });
-      
-      context?.showSuccess(
-        dict?.modals?.nft?.nftSubmitted,
-        hash
-      );
+      setShowTokenTypeDropdown(false);
+      setShowSubmitForm(false);
+
+      context?.showSuccess(dict?.modals?.nft?.nftSubmitted, hash);
     } catch (err: any) {
       console.error(err.message);
-      context?.showError(
-        dict?.modals?.nft?.submitError
-      );
+      context?.showError(dict?.modals?.nft?.submitError);
     }
     setSubmitLoading(false);
   };
 
   const getNFTs = async (skip: number = 0, reset: boolean = false) => {
+    if (!publicClient) return;
     setNftsLoading(true);
     try {
       const limit = 20;
       const data = await getAllNFTs(limit, skip);
-      const newNfts =
-        data?.data?.nfts?.length < 1 ? DUMMY_NFTS : data?.data?.nfts;
+      let newNfts = data?.data?.nfts;
+
+      newNfts = await fetchMetadata(newNfts, publicClient);
 
       if (reset) {
         setNfts(newNfts);
@@ -93,10 +99,14 @@ const useNFTs = (dict?: any) => {
   };
 
   const verifyNFT = async () => {
-    if (!publicClient || !formData.tokenAddress || !formData.tokenId) return false;
-    
+    if (!publicClient || !formData.tokenAddress || !formData.tokenId)
+      return false;
+
     try {
-      if (formData.tokenType === TokenType.ERC721 || formData.tokenType === TokenType.ERC998) {
+      if (
+        formData.tokenType === TokenType.ERC721 ||
+        formData.tokenType === TokenType.ERC998
+      ) {
         const owner = await publicClient.readContract({
           address: formData.tokenAddress as `0x${string}`,
           abi: [
@@ -134,13 +144,13 @@ const useNFTs = (dict?: any) => {
       console.error(err.message);
       return false;
     }
-  }
+  };
 
   useEffect(() => {
-    if (!nftsLoading && nfts?.length < 1) {
+    if (!nftsLoading && nfts?.length < 1 && publicClient) {
       getNFTs(0, true);
     }
-  }, []);
+  }, [publicClient]);
 
   return {
     nftsLoading,
@@ -149,7 +159,12 @@ const useNFTs = (dict?: any) => {
     loadMoreNfts,
     handleSubmitNFT,
     submitLoading,
-    formData, setFormData
+    formData,
+    setFormData,
+    showSubmitForm,
+    setShowSubmitForm,
+    showTokenTypeDropdown,
+    setShowTokenTypeDropdown,
   };
 };
 

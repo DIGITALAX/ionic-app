@@ -45,8 +45,8 @@ export const getAllNFTs = async (first: number, skip: number): Promise<any> => {
 };
 
 const NOT_APPRAISED = `
-query($wallet: String!, $first: Int!, $skip: Int!) {
-  conductors(where: {wallet: $wallet}, first: $first, skip: $skip) {
+query($conductorId: Int!, $first: Int!, $skip: Int!) {
+  conductors(where: {conductorId: $conductorId}, first: $first, skip: $skip) {
     notAppraised {
       nftId
       nftContract
@@ -66,14 +66,14 @@ query($wallet: String!, $first: Int!, $skip: Int!) {
 `;
 
 export const getNotAppraisedNFTs = async (
-  wallet: string,
+  conductorId: number,
   first: number,
   skip: number
 ): Promise<any> => {
   const queryPromise = graphClient.query({
     query: gql(NOT_APPRAISED),
     variables: {
-      wallet,
+      conductorId,
       first,
       skip,
     },
@@ -114,10 +114,14 @@ query($nftContract: String!, $nftId: Int!) {
         appraisalId
         conductorId
         overallScore
+        blockNumber
         blockTimestamp
         transactionHash
         uri
+        nftId
+        nftContract
         conductor {
+          conductorId
           uri
           metadata {
             title
@@ -128,6 +132,7 @@ query($nftContract: String!, $nftId: Int!) {
           count
           reaction {
             reactionId
+            packId
             reactionUri
             reactionMetadata {
               title

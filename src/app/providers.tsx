@@ -11,12 +11,6 @@ import {
   Reaction,
   Reviewer,
 } from "./components/Common/types/common.types";
-import {
-  DUMMY_USER_REACTIONS,
-  DUMMY_CONDUCTOR,
-  DUMMY_REVIEWER,
-  DUMMY_DESIGNER,
-} from "./lib/dummy";
 import { ErrorData, SuccessData } from "./components/Modals/types/modals.types";
 
 const queryClient = new QueryClient();
@@ -32,8 +26,16 @@ export const ModalContext = createContext<
       ) => void;
       reviewer: Reviewer | undefined;
       setReviewer: (e: SetStateAction<Reviewer | undefined>) => void;
-      verified: boolean;
-      setVerified: (e: SetStateAction<boolean>) => void;
+      verified: {
+        minted: number;
+        canMint: boolean;
+      };
+      setVerified: (
+        e: SetStateAction<{
+          minted: number;
+          canMint: boolean;
+        }>
+      ) => void;
       designer: Designer | undefined;
       setDesigner: (e: SetStateAction<Designer | undefined>) => void;
       showSuccess: (message: string, txHash?: string) => void;
@@ -63,18 +65,19 @@ export const config = createConfig(
 );
 
 export default function Providers({ children }: { children: React.ReactNode }) {
-  const [conductor, setConductor] = useState<Conductor | undefined>(
-    DUMMY_CONDUCTOR
-  );
-  const [reviewer, setReviewer] = useState<Reviewer | undefined>(
-    DUMMY_REVIEWER
-  );
-  const [userReactions, setUserReactions] =
-    useState<{ count: number; reaction: Reaction }[]>(DUMMY_USER_REACTIONS);
-  const [verified, setVerified] = useState<boolean>(false);
-  const [designer, setDesigner] = useState<Designer | undefined>(
-    DUMMY_DESIGNER
-  );
+  const [conductor, setConductor] = useState<Conductor | undefined>();
+  const [reviewer, setReviewer] = useState<Reviewer | undefined>();
+  const [userReactions, setUserReactions] = useState<
+    { count: number; reaction: Reaction }[]
+  >([]);
+  const [verified, setVerified] = useState<{
+    minted: number;
+    canMint: boolean;
+  }>({
+    minted: 0,
+    canMint: false,
+  });
+  const [designer, setDesigner] = useState<Designer | undefined>();
   const [successData, setSuccessData] = useState<SuccessData | null>(null);
   const [errorData, setErrorData] = useState<ErrorData | null>(null);
 

@@ -7,6 +7,7 @@ query($conductorId: Int!, $first: Int!, $skip: Int!) {
     appraiser
     nftId
     nftContract
+    tokenType
     conductorId
     appraisalId
     overallScore
@@ -27,6 +28,10 @@ query($conductorId: Int!, $first: Int!, $skip: Int!) {
             packId
             reactionUri
             tokenIds
+            reactionMetadata {
+              image
+              title
+            }
         }
         count
     }

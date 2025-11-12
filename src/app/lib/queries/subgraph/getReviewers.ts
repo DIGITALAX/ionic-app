@@ -1,7 +1,6 @@
 import { gql } from "@apollo/client";
 import { graphClient } from "../client";
 
-
 const REVIEWER = `
 query($wallet: String!) {
   reviewers(where: {wallet: $wallet}) {
@@ -44,9 +43,16 @@ export const getReviewer = async (wallet: string): Promise<any> => {
 };
 
 const REVIEWS = `
-query($wallet: String!,$first: Int!, $skip: Int!) {
-  reviews(where: {wallet: $wallet},first: $first, skip: $skip) {
-    reviewer
+query($reviewer: String!,$first: Int!, $skip: Int!) {
+  reviews(where: {reviewer: $reviewer},first: $first, skip: $skip) {
+    reviewer {
+      wallet
+      uri
+      metadata {
+        title
+        image
+      }
+    }
     reviewId
     conductorId
     reviewScore
@@ -63,6 +69,10 @@ query($wallet: String!,$first: Int!, $skip: Int!) {
         reaction {
             reactionId
             reactionUri
+            reactionMetadata {
+              image
+              title
+            }
         }
         count
     }
@@ -71,14 +81,14 @@ query($wallet: String!,$first: Int!, $skip: Int!) {
 `;
 
 export const getReviewerReviews = async (
-  wallet: string,
+  reviewer: string,
   first: number,
   skip: number
 ): Promise<any> => {
   const queryPromise = graphClient.query({
     query: gql(REVIEWS),
     variables: {
-      wallet,
+      reviewer,
       first,
       skip,
     },
@@ -99,9 +109,6 @@ export const getReviewerReviews = async (
   }
 };
 
-
-
-
 const REVIEWER_PAGE = `
 query($wallet: String!) {
   reviewers(where: {wallet: $wallet}) {
@@ -110,6 +117,8 @@ query($wallet: String!) {
     reviewCount
     totalScore
     averageScore
+    blockTimestamp
+    transactionHash
     lastReviewTimestamp
     metadata {
       title
@@ -121,6 +130,7 @@ query($wallet: String!) {
     conductorId
     conductor {
       uri
+      conductorId
       metadata {
         image 
         title
@@ -140,6 +150,10 @@ query($wallet: String!) {
         reaction {
             reactionId
             reactionUri
+            reactionMetadata {
+              image 
+              title
+            }
         }
         count
     }

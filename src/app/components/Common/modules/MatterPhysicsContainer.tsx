@@ -70,58 +70,80 @@ export const MatterPhysicsContainer = () => {
       bodiesToRenderRef.current.push(fallingImage);
     };
 
+    const MAX_BODIES = 1000;
+    let rainInterval: NodeJS.Timeout;
+    let renderLoop: NodeJS.Timeout;
+    let createdCount = 0;
+
+    const startLoops = () => {
+      rainInterval = setInterval(() => {
+        if (createdCount < MAX_BODIES) {
+          const randomX = Math.random() * width;
+          createFallingImage(randomX);
+          createdCount++;
+        }
+      }, 150);
+
+      renderLoop = setInterval(() => {
+        Engine.update(engine, 1000 / 60);
+
+        const visibleBodies = bodiesToRenderRef.current.filter((item) => {
+          return item.body.position.y < height + 50;
+        });
+
+        bodiesToRenderRef.current = visibleBodies;
+
+        if (createdCount >= MAX_BODIES) {
+          window.dispatchEvent(new CustomEvent("resetStickers"));
+        } else {
+          if (visibleBodies.length > 0) {
+            const minY = Math.min(
+              ...visibleBodies.map((item) => item.body.position.y)
+            );
+            maxHeightRef.current = height - minY;
+            const heightThreshold = height * 0.5;
+            const isOverThreshold = maxHeightRef.current >= heightThreshold;
+
+            visibleBodies.forEach((item) => {
+              const idNumber = parseInt(item.id.split("-")[1]);
+              if (isOverThreshold) {
+                item.zIndex = idNumber;
+              } else {
+                item.zIndex = 10000 + idNumber;
+              }
+            });
+          } else {
+            maxHeightRef.current = 0;
+          }
+
+          setBodies([...visibleBodies]);
+        }
+      }, 1000 / 60);
+    };
+
     const handleReset = () => {
+      clearInterval(rainInterval);
+      clearInterval(renderLoop);
+
       bodiesToRenderRef.current.forEach((item) => {
         World.remove(engine.world, item.body);
       });
       bodiesToRenderRef.current = [];
       setBodies([]);
       maxHeightRef.current = 0;
+      idCounterRef.current = 0;
+      createdCount = 0;
+
+      setTimeout(() => startLoops(), 100);
     };
 
     window.addEventListener("resetStickers", handleReset);
-
-    const MAX_BODIES = 5000;
-    const rainInterval = setInterval(() => {
-      if (bodiesToRenderRef.current.length < MAX_BODIES) {
-        const randomX = Math.random() * width;
-        createFallingImage(randomX);
-      }
-    }, 150);
-
-    const renderLoop = setInterval(() => {
-      Engine.update(engine, 1000 / 60);
-
-      const visibleBodies = bodiesToRenderRef.current.filter((item) => {
-        return item.body.position.y < height + 50;
-      });
-
-      bodiesToRenderRef.current = visibleBodies;
-
-      if (visibleBodies.length > 0) {
-        const minY = Math.min(...visibleBodies.map((item) => item.body.position.y));
-        maxHeightRef.current = height - minY;
-        const heightThreshold = height * 0.5;
-        const isOverThreshold = maxHeightRef.current >= heightThreshold;
-
-        visibleBodies.forEach((item) => {
-          const idNumber = parseInt(item.id.split('-')[1]);
-          if (isOverThreshold) {
-            item.zIndex = idNumber;
-          } else {
-            item.zIndex = 10000 + idNumber;
-          }
-        });
-      } else {
-        maxHeightRef.current = 0;
-      }
-
-      setBodies([...visibleBodies]);
-    }, 1000 / 60);
+    startLoops();
 
     return () => {
       clearInterval(rainInterval);
       clearInterval(renderLoop);
+      window.removeEventListener("resetStickers", handleReset);
       World.clear(engine.world, true);
       Engine.clear(engine);
     };

@@ -1,15 +1,17 @@
 import { ModalContext } from "@/app/providers";
 import { useContext, useEffect, useState } from "react";
 import { useAccount, usePublicClient, useWalletClient } from "wagmi";
-import { Appraisal, BaseMetadata } from "../../Common/types/common.types";
+import { Appraisal } from "../../Common/types/common.types";
 import {
   getCoreContractAddresses,
   getCurrentNetwork,
+  INFURA_GATEWAY,
 } from "@/app/lib/constants";
 import { ABIS } from "@/abis";
 import { getConductorAppraisals } from "@/app/lib/queries/subgraph/getAppraisals";
+import { fetchMetadata } from "@/app/lib/utils";
 
-const useConductor = (dict?: any) => {
+const useConductor = (dict: any) => {
   const { address } = useAccount();
   const context = useContext(ModalContext);
   const publicClient = usePublicClient();
@@ -26,18 +28,22 @@ const useConductor = (dict?: any) => {
   );
   const [inviteDesignerLoading, setInviteDesignerLoading] =
     useState<boolean>(false);
-  const [form, setForm] = useState<{title: string; description: string ; image: string | File}>(
+  const [form, setForm] = useState<{
+    title: string;
+    description: string;
+    image: string | File;
+  }>(
     context?.conductor?.metadata || {
       title: "",
       description: "",
       image: "",
     }
   );
-  const [mintLoading, setMintLoading] = useState<boolean>(false);
   const [inviteWallet, setInviteWallet] = useState<string>("");
   const [appraisals, setAppraisals] = useState<Appraisal[]>([]);
   const [appraisalsLoading, setAppraisalsLoading] = useState<boolean>(false);
   const [hasMoreAppraisals, setHasMoreAppraisals] = useState<boolean>(true);
+  const [imagePreview, setImagePreview] = useState<string>("");
   const network = getCurrentNetwork();
   const contracts = getCoreContractAddresses(network.chainId);
 
@@ -45,7 +51,7 @@ const useConductor = (dict?: any) => {
     skip: number = 0,
     reset: boolean = false
   ) => {
-    if (appraisalsLoading) return;
+    if (appraisalsLoading || !publicClient) return;
 
     setAppraisalsLoading(true);
     try {
@@ -55,8 +61,23 @@ const useConductor = (dict?: any) => {
         limit,
         skip
       );
-      const newAppraisals = data?.data?.appraisals || [];
-
+      let newAppraisals = data?.data?.appraisals || [];
+      const nfts = await fetchMetadata(
+        newAppraisals?.map((ap: any) => ({
+          nftContract: ap?.nftContract,
+          nftId: ap?.nftId,
+          tokenType: ap?.tokenType,
+        })),
+        publicClient
+      );
+      newAppraisals = newAppraisals?.map((ap: any) => ({
+        ...ap,
+        nft: nfts?.find(
+          (nft) =>
+            Number(nft?.nftId) == Number(ap?.nftId) &&
+            nft?.nftContract == ap?.nftContract
+        ),
+      }));
       if (reset) {
         setAppraisals(newAppraisals);
       } else {
@@ -71,7 +92,7 @@ const useConductor = (dict?: any) => {
   };
 
   const loadMoreAppraisals = () => {
-    if (hasMoreAppraisals && !appraisalsLoading) {
+    if (hasMoreAppraisals && !appraisalsLoading && publicClient) {
       handleAllAppraisals(appraisals.length, false);
     }
   };
@@ -117,27 +138,17 @@ const useConductor = (dict?: any) => {
       });
 
       const result = await response.json();
-      let hash;
-      if (context?.conductor?.conductorId) {
-        hash = await walletClient.writeContract({
-          address: contracts.appraisals,
-          abi: ABIS.IonicConductors,
-          functionName: "updateProfile",
-          args: [
-            Number(context?.conductor?.conductorId),
-            "ipfs://" + result.hash,
-          ],
-          account: address,
-        });
-      } else {
-        hash = await walletClient.writeContract({
-          address: contracts.appraisals,
-          abi: ABIS.IonicConductors,
-          functionName: "registerProfile",
-          args: ["ipfs://" + result.hash],
-          account: address,
-        });
-      }
+
+      const hash = await walletClient.writeContract({
+        address: contracts.conductors,
+        abi: ABIS.IonicConductors,
+        functionName: "updateProfile",
+        args: [
+          Number(context?.conductor?.conductorId),
+          "ipfs://" + result.hash,
+        ],
+        account: address,
+      });
 
       await publicClient.waitForTransactionReceipt({ hash });
       context?.setConductor((prev) => ({
@@ -148,24 +159,21 @@ const useConductor = (dict?: any) => {
           description: form.description,
         },
       }));
-      
-      const message = context?.conductor?.conductorId 
-        ? dict?.modals?.conductor?.profileUpdated 
-        : dict?.modals?.conductor?.profileCreated;
-      
-      context?.showSuccess(
-        message,
-        hash
-      );
+
+      const message =
+        Number(context?.conductor?.conductorId) > 0 && context?.conductor?.uri
+          ? dict?.modals?.conductor?.profileUpdated
+          : dict?.modals?.conductor?.profileCreated;
+
+      context?.showSuccess(message, hash);
     } catch (err: any) {
       console.error(err.message);
-      const errorMessage = context?.conductor?.conductorId
-        ? dict?.modals?.conductor?.updateError
-        : dict?.modals?.conductor?.createError;
-      
-      context?.showError(
-        errorMessage
-      );
+      const errorMessage =
+        Number(context?.conductor?.conductorId) > 0 && context?.conductor?.uri
+          ? dict?.modals?.conductor?.updateError
+          : dict?.modals?.conductor?.createError;
+
+      context?.showError(errorMessage);
     }
 
     setConductorLoading(false);
@@ -176,7 +184,7 @@ const useConductor = (dict?: any) => {
       !address ||
       !publicClient ||
       !context?.verified ||
-      context?.conductor?.conductorId ||
+      Number(context?.conductor?.conductorId) < 1 ||
       !walletClient
     )
       return;
@@ -185,24 +193,19 @@ const useConductor = (dict?: any) => {
 
     try {
       const hash = await walletClient.writeContract({
-        address: contracts.appraisals,
+        address: contracts.conductors,
         abi: ABIS.IonicConductors,
-        functionName: "registerProfile",
+        functionName: "deleteProfile",
         args: [Number(context?.conductor?.conductorId)],
         account: address,
       });
       await publicClient.waitForTransactionReceipt({ hash });
       context?.setConductor(undefined);
-      
-      context?.showSuccess(
-        dict?.modals?.conductor?.profileDeleted,
-        hash
-      );
+
+      context?.showSuccess(dict?.modals?.conductor?.profileDeleted, hash);
     } catch (err: any) {
       console.error(err.message);
-      context?.showError(
-        dict?.modals?.conductor?.deleteError
-      );
+      context?.showError(dict?.modals?.conductor?.deleteError);
     }
 
     setDeleteLoading(false);
@@ -212,12 +215,11 @@ const useConductor = (dict?: any) => {
     if (
       !address ||
       !publicClient ||
-      !context?.verified ||
-      context?.conductor?.conductorId ||
+      Number(context?.verified?.minted) < 1 ||
+      Number(context?.conductor?.conductorId) < 1 ||
       !walletClient
     )
       return;
-
     setInviteDesignerLoading(true);
 
     try {
@@ -225,21 +227,16 @@ const useConductor = (dict?: any) => {
         address: contracts.designers,
         abi: ABIS.IonicDesigners,
         functionName: "inviteDesigner",
-        args: [designer],
+        args: [BigInt(Number(context?.conductor?.conductorId)), designer],
         account: address,
       });
       await publicClient.waitForTransactionReceipt({ hash });
       context?.setConductor(undefined);
-      
-      context?.showSuccess(
-        dict?.modals?.conductor?.designerInvited,
-        hash
-      );
+      setInviteWallet("");
+      context?.showSuccess(dict?.modals?.conductor?.designerInvited, hash);
     } catch (err: any) {
       console.error(err.message);
-      context?.showError(
-        dict?.modals?.conductor?.inviteError
-      );
+      context?.showError(dict?.modals?.conductor?.inviteError);
     }
 
     setInviteDesignerLoading(false);
@@ -250,7 +247,7 @@ const useConductor = (dict?: any) => {
       !address ||
       !publicClient ||
       !context?.verified ||
-      context?.conductor?.conductorId ||
+      Number(context?.conductor?.conductorId) < 1 ||
       !walletClient
     )
       return;
@@ -267,21 +264,16 @@ const useConductor = (dict?: any) => {
         address: contracts.designers,
         abi: ABIS.IonicDesigners,
         functionName: "deactivateDesigner",
-        args: [designerId],
+        args: [BigInt(designerId)],
         account: address,
       });
       await publicClient.waitForTransactionReceipt({ hash });
       context?.setConductor(undefined);
-      
-      context?.showSuccess(
-        dict?.modals?.conductor?.designerDeactivated,
-        hash
-      );
+
+      context?.showSuccess(dict?.modals?.conductor?.designerDeactivated, hash);
     } catch (err: any) {
       console.error(err.message);
-      context?.showError(
-        dict?.modals?.conductor?.deactivateError
-      );
+      context?.showError(dict?.modals?.conductor?.deactivateError);
     }
 
     setDeactiveDesignerLoading((prev) => {
@@ -292,38 +284,46 @@ const useConductor = (dict?: any) => {
     });
   };
 
-  const handleMintIonic = async () => {
-    if (!address || !publicClient || !walletClient) return;
-
-    setMintLoading(true);
-    try {
-      const hash = await walletClient.writeContract({
-        address: contracts.ionic,
-        abi: ABIS.IonicConductors,
-        functionName: "mint",
-        args: [],
-        account: address,
-      });
-      await publicClient.waitForTransactionReceipt({ hash });
-      
-      context?.showSuccess(
-        dict?.modals?.conductor?.ionicMinted,
-        hash
-      );
-    } catch (err: any) {
-      console.error(err.message);
-      context?.showError(
-        dict?.modals?.conductor?.mintError
-      );
-    }
-    setMintLoading(false);
-  };
-
   useEffect(() => {
-    if (address && appraisals.length < 1 && context?.conductor?.conductorId) {
+    if (
+      address &&
+      appraisals.length < 1 &&
+      Number(context?.conductor?.conductorId) > 0 &&
+      publicClient
+    ) {
       handleAllAppraisals(0, true);
     }
-  }, [address]);
+  }, [address, publicClient, context?.conductor]);
+
+  useEffect(() => {
+    if (form.image && typeof form.image !== "string") {
+      const preview = URL.createObjectURL(form.image as Blob);
+      setImagePreview(preview);
+      return () => URL.revokeObjectURL(preview);
+    } else if (!form.image.includes("ipfs://")) {
+      setImagePreview("");
+    }
+  }, [form.image]);
+
+  useEffect(() => {
+    if (context?.conductor) {
+      setForm({
+        title: context?.conductor?.metadata?.title ?? "",
+        description: context?.conductor?.metadata?.description ?? "",
+        image: context?.conductor?.metadata?.image ?? "",
+      });
+      if (
+        context?.conductor?.metadata?.image &&
+        context?.conductor?.metadata?.image !== ""
+      ) {
+        setImagePreview(
+          `${INFURA_GATEWAY}/ipfs/${
+            context?.conductor?.metadata?.image?.split("ipfs://")?.[1]
+          }`
+        );
+      }
+    }
+  }, [context?.conductor]);
 
   return {
     conductorLoading,
@@ -340,10 +340,10 @@ const useConductor = (dict?: any) => {
     inviteDesignerLoading,
     deactiveDesignerLoading,
     handleDeactiveDesigner,
-    handleMintIonic,
-    mintLoading,
     inviteWallet,
     setInviteWallet,
+    imagePreview,
+    setImagePreview,
   };
 };
 

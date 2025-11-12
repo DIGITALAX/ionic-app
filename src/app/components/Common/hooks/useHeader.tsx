@@ -10,6 +10,8 @@ import { ModalContext } from "@/app/providers";
 import { useContext, useEffect, useState } from "react";
 import { useAccount, usePublicClient } from "wagmi";
 import { Reaction } from "../types/common.types";
+import { ABIS } from "@/abis";
+import { ensureMetadata } from "@/app/lib/utils";
 
 const useHeader = () => {
   const context = useContext(ModalContext);
@@ -24,8 +26,31 @@ const useHeader = () => {
     if (!address || !publicClient) return;
     setConductorLoading(true);
     try {
-      const data = await getConductor(address);
-      context?.setConductor(data?.data?.conductors?.[0]);
+      const conductorId = (await publicClient.readContract({
+        address: contracts.ionic,
+        abi: ABIS.IonicNFT,
+        functionName: "balanceOf",
+        args: [address],
+        account: address,
+      })) as bigint;
+
+      const data = await getConductor(Number(conductorId));
+      let ensured = data?.data?.conductors?.[0];
+      if (ensured?.uri && !ensured?.metadata) {
+        ensured = await ensureMetadata(ensured);
+      }
+      const invitedDesigners = await Promise.all(
+        (ensured?.invitedDesigners ?? [])?.map(async (des: any) => {
+          if (des?.uri && !des?.metadata) {
+            des = await ensureMetadata(des);
+          }
+          return des;
+        })
+      );
+      context?.setConductor({
+        ...ensured,
+        invitedDesigners,
+      });
     } catch (err: any) {
       console.error(err.message);
     }
@@ -35,44 +60,47 @@ const useHeader = () => {
   const getUserReactions = async () => {
     if (!publicClient || !address) return;
     try {
-      const tokenIds = await publicClient.readContract({
+      const balance = (await publicClient.readContract({
         address: contracts.reactionPacks,
-        abi: [
-          {
-            type: "function",
-            name: "tokensOfOwner",
-            inputs: [
-              { name: "owner", type: "address", internalType: "address" },
-            ],
-            outputs: [
-              { name: "", type: "uint256[]", internalType: "uint256[]" },
-            ],
-            stateMutability: "view",
-          },
-        ],
-        functionName: "tokensOfOwner",
+        abi: ABIS.IonicReactionPacks,
+        functionName: "balanceOf",
         args: [address],
         account: address,
-      });
+      })) as bigint;
 
-      const data = await getTokenReactions(tokenIds.map((tok) => Number(tok)));
+      const tokenIds: number[] = [];
+      for (let i = 0; i < Number(balance); i++) {
+        const tokenId = await publicClient.readContract({
+          address: contracts.reactionPacks,
+          abi: ABIS.IonicReactionPacks,
+          functionName: "tokenOfOwnerByIndex",
+          args: [address, BigInt(i)],
+          account: address,
+        });
+        tokenIds.push(Number(tokenId));
+      }
 
-      if (data?.data?.reactions) {
+      const data = await getTokenReactions(tokenIds);
+
+      if (data?.data?.tokenReactions) {
         const reactionMap = new Map();
 
-        data.data.reactions.forEach((reaction: Reaction) => {
-          const reactionId = reaction.reactionId;
-          if (reactionMap.has(reactionId)) {
-            reactionMap.get(reactionId).count++;
-          } else {
-            reactionMap.set(reactionId, {
-              reaction: reaction,
-              count: 1,
-            });
-          }
-        });
+        data?.data?.tokenReactions
+          ?.map((item: any) => item?.reaction)
+          .forEach((reaction: Reaction) => {
+            const reactionId = reaction.reactionId;
+            if (reactionMap.has(reactionId)) {
+              reactionMap.get(reactionId).count++;
+            } else {
+              reactionMap.set(reactionId, {
+                reaction: reaction,
+                count: 1,
+              });
+            }
+          });
 
         const groupedReactions = Array.from(reactionMap.values());
+
         context?.setUserReactions(groupedReactions);
       }
     } catch (err: any) {
@@ -81,27 +109,39 @@ const useHeader = () => {
   };
 
   const getVerifiedConductor = async () => {
-    if (!publicClient || !address) return;
+    if (
+      !address ||
+      !publicClient ||
+      context?.verified?.canMint ||
+      Number(context?.verified?.minted) > 0
+    )
+      return;
     try {
-      const data = await publicClient.readContract({
+      const balanceOf = await publicClient.readContract({
         address: contracts.ionic,
-        abi: [
-          {
-            type: "function",
-            name: "balanceOf",
-            inputs: [
-              { name: "owner", type: "address", internalType: "address" },
-            ],
-            outputs: [{ name: "", type: "uint256", internalType: "uint256" }],
-            stateMutability: "view",
-          },
-        ],
+        abi: ABIS.IonicNFT,
         functionName: "balanceOf",
         args: [address],
         account: address,
       });
-
-      context?.setVerified(Number(data) > 0);
+      if (Number(balanceOf) > 0) {
+        context?.setVerified((prev) => ({
+          ...prev,
+          minted: Number(balanceOf),
+        }));
+        return;
+      }
+      const auth = await publicClient.readContract({
+        address: contracts.ionic,
+        abi: ABIS.IonicNFT,
+        functionName: "isAuthorizedMinter",
+        args: [address],
+        account: address,
+      });
+      context?.setVerified((prev) => ({
+        ...prev,
+        canMint: Boolean(auth),
+      }));
     } catch (err: any) {
       console.error(err.message);
     }
@@ -112,7 +152,12 @@ const useHeader = () => {
       getConductorAccount();
     }
 
-    if (address && publicClient && !context?.verified) {
+    if (
+      address &&
+      publicClient &&
+      !context?.verified?.canMint &&
+      Number(context?.verified?.minted) == 0
+    ) {
       getVerifiedConductor();
     }
 
