@@ -285,6 +285,7 @@
   "nfts": {
     "title": "NFTS",
     "submitNft": "SUBMIT NFT",
+    "hideForm": "HIDE",
     "submitNewNft": "SUBMIT NEW NFT",
     "tokenAddress": "TOKEN ADDRESS",
     "tokenAddressPlaceholder": "0x...",

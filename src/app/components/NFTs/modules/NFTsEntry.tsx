@@ -46,7 +46,7 @@ const NFTsEntry: FunctionComponent<{ dict: any }> = ({ dict }): JSX.Element => {
                 onClick={() => setShowSubmitForm(!showSubmitForm)}
                 className="text-xs bg-black text-white px-3 py-1 hover:bg-gray-800 transition-colors w-fit rounded"
               >
-                {showSubmitForm ? "HIDE" : dict?.nfts?.submitNft}
+                {showSubmitForm ? dict?.nfts?.hideForm : dict?.nfts?.submitNft}
               </button>
             </div>
 
