@@ -14,7 +14,7 @@ export const NETWORKS = {
   LENS_MAINNET: {
     chainId: 232,
     name: "Lens Network",
-    rpcUrl: "https://rpc.lens.dev",
+    rpcUrl: "https://rpc.lens.xyz",
     blockExplorer: "https://explorer.lens.xyz",
   },
 } as const;

@@ -19,6 +19,7 @@ const useMint = (dict: any) => {
   const contracts = getCoreContractAddresses(network.chainId);
 
   const handleMint = async () => {
+  
     if (
       !address ||
       !publicClient ||
