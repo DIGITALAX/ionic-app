@@ -19,10 +19,7 @@ const useMint = (dict: any) => {
   const contracts = getCoreContractAddresses(network.chainId);
 
   const handleMint = async () => {
-  console.log(    !address ,
-      !publicClient ,
-      !walletClient ,
-      Number(context?.verified?.minted) > 0)
+
     if (
       !address ||
       !publicClient ||
