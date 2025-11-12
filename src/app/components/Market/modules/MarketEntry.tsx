@@ -130,7 +130,7 @@ const MarketEntry: FunctionComponent<{ dict: any }> = ({
                                         .map((reaction, rIdx: number) => (
                                           <div
                                             key={rIdx}
-                                            className="w-5 h-5 relative border border-gray-200"
+                                            className="w-5 h-5 relative"
                                           >
                                             <Image
                                               fill
@@ -150,7 +150,7 @@ const MarketEntry: FunctionComponent<{ dict: any }> = ({
                                                 reaction.reactionMetadata
                                                   ?.title || "reaction"
                                               }
-                                              className="object-cover"
+                                              objectFit="contain"
                                               draggable={false}
                                             />
                                           </div>
