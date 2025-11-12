@@ -60,7 +60,7 @@ const Entry: FunctionComponent<{ dict: any }> = ({ dict }): JSX.Element => {
                         alt="reaction"
                         width={24}
                         height={24}
-                        className="object-cover"
+                        objectFit="contain"
                       />
                     ) : (
                       <span className="text-lg">{floatingEmoji.emoji}</span>

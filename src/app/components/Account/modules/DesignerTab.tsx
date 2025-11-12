@@ -246,7 +246,7 @@ const DesignerTab: FunctionComponent<{ dict: any }> = ({
                       <div className="flex gap-2 w-full relative h-fit justify-between items-center sm:flex-nowrap flex-wrap flex-row">
                         <div className="relative w-fit h-fit flex flex-row gap-2">
                           <div className="relative w-fit h-fit flex">
-                            <div className="w-10 h-10 relative border border-gray-200">
+                            <div className="w-10 h-10 relative">
                               <Image
                                 fill
                                 draggable={false}
@@ -254,7 +254,7 @@ const DesignerTab: FunctionComponent<{ dict: any }> = ({
                                   pack.packMetadata.image?.split("ipfs://")?.[1]
                                 }`}
                                 alt={pack.packMetadata.title}
-                                className="object-cover"
+                                className="contain"
                               />
                             </div>
                           </div>
