@@ -84,9 +84,9 @@ const Entry: FunctionComponent<{ dict: any }> = ({ dict }): JSX.Element => {
                   </button>
 
                   <div className="flex flex-col items-center justify-center gap-3 min-w-0 max-w-md">
-                    {currentNFT.metadata?.title && (
+                    {currentNFT?.metadata?.title && (
                       <h2 className="stamp-title text-base">
-                        {currentNFT.metadata.title}
+                        {currentNFT?.metadata?.title}
                       </h2>
                     )}
                     <div className="relative">
@@ -95,7 +95,7 @@ const Entry: FunctionComponent<{ dict: any }> = ({ dict }): JSX.Element => {
                         onClick={() => {
                           if (currentNFT) {
                             router.push(
-                              `/nft/${currentNFT.nftContract}/${currentNFT.nftId}`
+                              `/nft/${currentNFT?.nftContract}/${currentNFT?.nftId}`
                             );
                           }
                         }}
@@ -103,9 +103,9 @@ const Entry: FunctionComponent<{ dict: any }> = ({ dict }): JSX.Element => {
                         <Metadata metadata={currentNFT?.metadata!} />
                       </div>
                     </div>
-                    {currentNFT.metadata?.description && (
+                    {currentNFT?.metadata?.description && (
                       <div className="text-xs text-gray-600 text-left max-w-xs">
-                        {currentNFT.metadata.description}
+                        {currentNFT?.metadata?.description}
                       </div>
                     )}
                     {((currentAppraisal?.reactions?.length || 0) > 0 ||
