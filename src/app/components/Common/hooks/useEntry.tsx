@@ -496,8 +496,9 @@ const useEntry = (dict: any) => {
         functionName: "createAppraisalBatch",
         args: [
           Number(context?.conductor?.conductorId),
-          data.map((d) => d.nftId),
-          data.map((d) => d.overallScore),
+          data.map((d) => d.nftContract),
+          data.map((d) => BigInt(d.nftId)),
+          data.map((d) => BigInt(d.overallScore)),
           data.map((d) => d.uri),
           data.map((d) => d.reactionUsage),
         ],
