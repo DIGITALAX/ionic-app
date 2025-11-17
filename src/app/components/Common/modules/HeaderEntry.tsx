@@ -4,7 +4,7 @@ import { FunctionComponent, JSX, useCallback } from "react";
 import useHeader from "../hooks/useHeader";
 import { ConnectKitButton } from "connectkit";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { useRouter, usePathname } from "next/navigation";
 import Image from "next/image";
 
 const HeaderEntry: FunctionComponent<{ dict: any }> = ({
@@ -12,9 +12,22 @@ const HeaderEntry: FunctionComponent<{ dict: any }> = ({
 }): JSX.Element => {
   const { isConnected } = useHeader();
   const router = useRouter();
+  const path = usePathname();
   const handleReset = useCallback(() => {
     window.dispatchEvent(new CustomEvent("resetStickers"));
   }, []);
+
+  const changeLanguage = () => {
+    const segments = path.split("/");
+    segments[1] = path.includes("/en/") ? "es" : "en";
+    const newPath = segments.join("/");
+
+    document.cookie = `NEXT_LOCALE=${
+      path.includes("/en/") ? "es" : "en"
+    }; path=/; SameSite=Lax`;
+
+    router.push(newPath);
+  };
   return (
     <div className="relative top-0 left-0 right-0 z-50 text-xxs">
       <div className="flex items-center justify-center sm:justify-between sm:gap-0 gap-3 py-2 px-2 sm:px-6 h-fit sm:h-16 flex-wrap">
@@ -70,6 +83,13 @@ const HeaderEntry: FunctionComponent<{ dict: any }> = ({
               {dict?.header?.account}
             </button>
           )}
+
+          <button
+            onClick={changeLanguage}
+            className="text-white hover:opacity-70 transition-opacity"
+          >
+            {path.includes("/en/") ? "CASTELLANO" : "AUSSIE"}
+          </button>
 
           <ConnectKitButton.Custom>
             {({ isConnected, show, truncatedAddress }) => {
