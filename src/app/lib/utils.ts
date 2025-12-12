@@ -1,6 +1,7 @@
 import { INFURA_GATEWAY } from "./constants";
 import { PublicClient } from "viem";
 import { TokenType } from "@/app/components/NFTs/types/nfts.types";
+import { fetchNFTMetadata } from "./helpers/metadata";
 
 export const ensureMetadata = async (item: any) => {
   if (!item?.metadata && item?.uri) {
@@ -49,7 +50,7 @@ export const fetchMetadata = async (
           );
         }
         if (tokenUri) {
-          const metadata = await fetchMetadataFromIPFS(tokenUri);
+          const metadata = await fetchNFTMetadata(tokenUri);
           return { ...nft, metadata, uri: tokenUri };
         }
 

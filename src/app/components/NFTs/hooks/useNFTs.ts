@@ -39,7 +39,12 @@ const useNFTs = (dict: any) => {
     if (!address || !publicClient || !walletClient) return;
     setSubmitLoading(true);
     try {
-      await verifyNFT();
+      const exists = await verifyNFT();
+      if (!exists) {
+        context?.showError(dict?.modals?.nft?.nftNotFound);
+        setSubmitLoading(false);
+        return;
+      }
       const hash = await walletClient.writeContract({
         address: contracts.appraisals,
         abi: ABIS.IonicAppraisals,

@@ -9,7 +9,7 @@ const Metadata: FunctionComponent<{
     case "audio":
       return (
         <audio muted autoPlay loop draggable={false} className="object-cover">
-          <source src={metadata.video} />
+          <source src={metadata.audio} />
         </audio>
       );
 

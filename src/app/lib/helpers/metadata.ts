@@ -128,12 +128,10 @@ const extractMediaUrls = (metadata: any): {
 
   if (!result.video && metadata.animation_url) {
     const animType = determineMediaType(metadata.animation_url);
-    if (animType === 'video') {
-      result.video = normalizeMediaUrl(metadata.animation_url);
-    } else if (animType === 'audio') {
+    if (animType === 'audio') {
       result.audio = normalizeMediaUrl(metadata.animation_url);
-    } else if (!result.image) {
-      result.image = normalizeMediaUrl(metadata.animation_url);
+    } else if (animType !== 'image') {
+      result.video = normalizeMediaUrl(metadata.animation_url);
     }
   }
 

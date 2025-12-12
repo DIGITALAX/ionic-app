@@ -340,7 +340,8 @@
     },
     "nft": {
       "nftSubmitted": "NFT submitted successfully!",
-      "submitError": "Failed to submit NFT"
+      "submitError": "Failed to submit NFT",
+      "nftNotFound": "NFT not found. Please verify the contract address and token ID."
     },
     "pack": {
       "purchaseSuccessful": "Reaction pack purchased successfully!",

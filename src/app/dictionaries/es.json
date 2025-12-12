@@ -340,7 +340,8 @@
     },
     "nft": {
       "nftSubmitted": "\u00a1NFT enviado exitosamente!",
-      "submitError": "Error al enviar el NFT"
+      "submitError": "Error al enviar el NFT",
+      "nftNotFound": "NFT no encontrado. Verifica la dirección del contrato y el ID del token."
     },
     "pack": {
       "purchaseSuccessful": "\u00a1Paquete de reacciones comprado exitosamente!",

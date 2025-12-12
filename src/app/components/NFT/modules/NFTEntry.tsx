@@ -13,6 +13,7 @@ import {
   formatDate,
   getExplorerUrl,
 } from "@/app/lib/helpers/getExplorerUrl";
+import Metadata from "@/app/components/Common/modules/Metadata";
 
 const NFTEntry: FunctionComponent<{ dict: any }> = ({ dict }): JSX.Element => {
   const { nftContract, nftId } = useParams();
@@ -102,21 +103,9 @@ const NFTEntry: FunctionComponent<{ dict: any }> = ({ dict }): JSX.Element => {
             <div className="stamp-grid-background"></div>
 
             <div className="flex flex-col gap-4 p-4 items-center justify-center relative">
-              {nft.metadata?.image && (
+              {(nft.metadata?.image || nft.metadata?.video) && (
                 <div className="w-full md:w-40 h-40 relative shrink-0 mx-auto md:mx-0">
-                  <Image
-                    fill
-                    src={
-                      nft.metadata.image?.includes("ipfs://")
-                        ? `${INFURA_GATEWAY}/ipfs/${
-                            nft.metadata.image?.split("ipfs://")?.[1]
-                          }`
-                        : nft.metadata.image
-                    }
-                    alt={nft.metadata?.title}
-                    className="object-contain"
-                    draggable={false}
-                  />
+                  <Metadata metadata={nft.metadata} />
                 </div>
               )}
 

@@ -6,7 +6,7 @@ import InfiniteScroll from "react-infinite-scroll-component";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { TokenType } from "../types/nfts.types";
-import { INFURA_GATEWAY } from "@/app/lib/constants";
+import Metadata from "@/app/components/Common/modules/Metadata";
 
 const NFTsEntry: FunctionComponent<{ dict: any }> = ({ dict }): JSX.Element => {
   const {
@@ -187,24 +187,10 @@ const NFTsEntry: FunctionComponent<{ dict: any }> = ({ dict }): JSX.Element => {
                             }
                           >
                             <div className="space-y-1">
-                              {nft.metadata?.image && (
+                              {(nft.metadata?.image || nft.metadata?.video) && (
                                 <div className="w-fit h-fit aspect-square relative border-b border-black">
                                   <div className="relative w-40 flex h-40">
-                                    <Image
-                                      fill
-                                      draggable={false}
-                                      src={
-                                        nft.metadata.image?.includes("ipfs://")
-                                          ? `${INFURA_GATEWAY}/ipfs/${
-                                              nft.metadata.image?.split(
-                                                "ipfs://"
-                                              )?.[1]
-                                            }`
-                                          : nft.metadata.image
-                                      }
-                                      alt={nft.metadata.title || "NFT"}
-                                      className="object-cover"
-                                    />
+                                    <Metadata metadata={nft.metadata} />
                                   </div>
                                 </div>
                               )}
