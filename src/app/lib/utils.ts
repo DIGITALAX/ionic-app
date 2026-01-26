@@ -41,11 +41,11 @@ export const fetchMetadata = async (
     nfts.map(async (nft) => {
       try {
         let tokenUri = nft?.uri;
-        if (publicClient && nft?.nftContract && nft?.nftId) {
+        if (publicClient && nft?.nftContract && nft?.tokenId) {
           tokenUri = await resolveTokenUri(
             publicClient,
             nft.nftContract,
-            nft.nftId,
+            nft.tokenId,
             nft.tokenType
           );
         }

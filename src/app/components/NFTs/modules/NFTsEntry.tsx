@@ -175,7 +175,7 @@ const NFTsEntry: FunctionComponent<{ dict: any }> = ({ dict }): JSX.Element => {
                       }
                       scrollableTarget="nfts-scroll"
                     >
-                      <div className="w-full flex flex-row justify-between items-start gap-3">
+                      <div className="w-full flex flex-row flex-wrap justify-start items-start gap-3">
                         {nfts.map((nft) => (
                           <div
                             key={nft.nftId}

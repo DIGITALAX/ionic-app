@@ -91,7 +91,7 @@ const Entry: FunctionComponent<{ dict: any }> = ({ dict }): JSX.Element => {
                     )}
                     <div className="relative">
                       <div
-                        className="w-48 h-48 relative border border-black cursor-pointer"
+                        className="w-48 h-48 relative cursor-pointer"
                         onClick={() => {
                           if (currentNFT) {
                             router.push(
