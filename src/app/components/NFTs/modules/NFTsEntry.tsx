@@ -188,17 +188,17 @@ const NFTsEntry: FunctionComponent<{ dict: any }> = ({ dict }): JSX.Element => {
                           >
                             <div className="space-y-1">
                               {(nft.metadata?.image || nft.metadata?.video) && (
-                                <div className="w-fit h-fit aspect-square relative border-b border-black">
+                                <div className="w-40 h-fit aspect-square relative border-b border-black">
                                   <div className="relative w-40 flex h-40">
                                     <Metadata metadata={nft.metadata} />
                                   </div>
                                 </div>
                               )}
-                              <div className="p-2">
-                                <h3 className="text-xs line-clamp-1 font-aza">
+                              <div className="p-2 w-40">
+                                <h3 className="text-xs break-words line-clamp-1 font-aza overflow-hidden">
                                   {nft.metadata?.title || `NFT #${nft.nftId}`}
                                 </h3>
-                                <div className="text-xs text-gray-600">
+                                <div className="text-xs break-all text-gray-600">
                                   #{nft.tokenId}
                                 </div>
                               </div>

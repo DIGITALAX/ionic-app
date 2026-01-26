@@ -1,7 +1,8 @@
 "use client";
 import { createContext, SetStateAction, useState } from "react";
 import { WagmiProvider, createConfig, http } from "wagmi";
-import { ConnectKitProvider, getDefaultConfig } from "connectkit";
+import { injected } from "wagmi/connectors";
+import { ConnectKitProvider } from "connectkit";
 import { chains } from "@lens-chain/sdk/viem";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { getCurrentNetwork } from "./lib/constants";
@@ -48,21 +49,14 @@ export const ModalContext = createContext<
   | undefined
 >(undefined);
 
-export const config = createConfig(
-  getDefaultConfig({
-    appName: "Ionic",
-    walletConnectProjectId: process.env
-      .NEXT_PUBLIC_WALLET_CONNECT_PROJECT_ID as string,
-    appUrl: "https://ionic.digitalax.xyz",
-    appIcon: "https://ionic.digitalax.xyz/favicon.ico",
-    chains: [chains.mainnet],
-    connectors: [],
-    transports: {
-      [currentNetwork.chainId]: http(),
-    },
-    ssr: true,
-  })
-);
+export const config = createConfig({
+  chains: [chains.mainnet],
+  connectors: [injected({ target: "metaMask" })],
+  transports: {
+    [currentNetwork.chainId]: http(),
+  },
+  ssr: true,
+});
 
 
 export default function Providers({ children }: { children: React.ReactNode }) {
